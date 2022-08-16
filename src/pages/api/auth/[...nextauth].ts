@@ -15,6 +15,15 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+    signIn({ user }) {
+      if (
+        !(user.email?.startsWith('135') || user.email?.startsWith('182')) ||
+        !user.email?.endsWith('@std.stei.itb.ac.id')
+      ) {
+        return false;
+      }
+      return true;
+    },
   },
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
