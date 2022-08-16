@@ -1,9 +1,7 @@
 import { withTRPC } from '@trpc/next';
 import { SessionProvider } from 'next-auth/react';
 import type { AppType } from 'next/dist/shared/lib/utils';
-import Script from 'next/script.js';
 import superjson from 'superjson';
-import { env } from '../env/client.mjs';
 import type { AppRouter } from '../server/router';
 import '../styles/globals.css';
 
@@ -14,25 +12,6 @@ const MyApp: AppType = ({
   return (
     <SessionProvider session={session}>
       <Component {...pageProps} />
-      <Script
-        src="https://accounts.google.com/gsi/client"
-        id="google"
-        async
-        defer
-        onLoad={() => {
-          google.accounts.id.initialize({
-            client_id: env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-            allowed_parent_origin: [env.NEXT_PUBLIC_URL, 'http://localhost'],
-            login_uri: env.NEXT_PUBLIC_URL + '/api/auth/callback/google',
-            callback(credentialResponse) {
-              console.log(credentialResponse);
-            },
-          });
-          google.accounts.id.prompt((p) => {
-            console.log(p);
-          });
-        }}
-      />
     </SessionProvider>
   );
 };

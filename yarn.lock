@@ -210,16 +210,6 @@
   resolved "https://registry.yarnpkg.com/@trpc/server/-/server-9.27.0.tgz#08aef2d0b025442e93f0c6b1421ddd7e81ae0eb5"
   integrity sha512-5A/d5U9Y8L6+4q46a9gLackTyMRUFyNubo6JlIpSxtea/wW8teR6Azux4gg/uKIM3+6+lgg/HxQHWvwkG0VOSg==
 
-"@types/google-one-tap@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@types/google-one-tap/-/google-one-tap-1.2.1.tgz#3b5937a3ff7104fdb9890b08ac9fecd724e867ef"
-  integrity sha512-TmpXCXTkcbk9jWOq+Vig+80ebr/uou6aFX2hVDfBhHBKZut8NEmFdEY/wk+BFwv311Mhk82RjK/adiVMvj8Acg==
-
-"@types/google.accounts@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@types/google.accounts/-/google.accounts-0.0.2.tgz#4e03bd249fe490f004f4f8d6423343fc51f5614a"
-  integrity sha512-wmnbDIiGZNr3dJ+NCGiWme78rhsf5gn1YJM6uRjf3FCb8lrRptybQeAnHQ+GDfKSo+z2hRxhS32VRDXJEAvCmg==
-
 "@types/json5@^0.0.29":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
