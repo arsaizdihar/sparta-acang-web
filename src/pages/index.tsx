@@ -1,5 +1,7 @@
 import type { NextPage } from 'next';
+import { useSession } from 'next-auth/react';
 import Head from 'next/head';
+import { useState } from 'react';
 
 type TechnologyCardProps = {
   name: string;
@@ -8,6 +10,7 @@ type TechnologyCardProps = {
 };
 
 const Home: NextPage = () => {
+  const session = useSession();
   return (
     <>
       <Head>
@@ -43,8 +46,21 @@ const Home: NextPage = () => {
             documentation="https://trpc.io/"
           />
         </div>
+        <Count />
+        {session.data && <h3>Hello {session.data.user?.name}</h3>}
       </main>
     </>
+  );
+};
+
+const Count = () => {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      {count}
+      <button onClick={() => setCount((c) => c + 1)}>+ count</button>
+    </div>
   );
 };
 
