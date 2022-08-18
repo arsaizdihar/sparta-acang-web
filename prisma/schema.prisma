@@ -48,12 +48,19 @@ model User {
     participationId String?
     participation   Participation?
     gender          Gender         @default(UNKNOWN)
+    major           Major
+    classYear       Int
 }
 
 enum Gender {
     MALE
     FEMALE
     UNKNOWN
+}
+
+enum Major {
+    IF
+    STI
 }
 
 model VerificationToken {

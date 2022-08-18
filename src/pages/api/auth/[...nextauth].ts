@@ -26,7 +26,16 @@ export const authOptions: NextAuthOptions = {
     },
   },
   // Configure one or more authentication providers
-  adapter: PrismaAdapter(prisma),
+  adapter: {
+    ...PrismaAdapter(prisma),
+    createUser(data) {
+      const email = data.email as string;
+      const classYear = Number(email.substring(3, 5));
+      const major = email.substring(0, 3) === '135' ? 'IF' : 'STI';
+      // @ts-ignore
+      return prisma.user.create({ data: { ...data, classYear, major } });
+    },
+  },
   providers: [
     GoogleProvider({
       clientId: env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
