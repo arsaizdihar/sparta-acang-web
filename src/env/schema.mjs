@@ -11,6 +11,8 @@ export const serverSchema = z.object({
   NEXTAUTH_SECRET: z.string(),
   NEXTAUTH_URL: z.string().url(),
   GOOGLE_CLIENT_SECRET: z.string(),
+  CMS_ENDPOINT: z.string().url().default('http://localhost:1337'),
+  CMS_API_KEY: z.string(),
 });
 
 /**
