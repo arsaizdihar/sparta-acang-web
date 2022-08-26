@@ -3,6 +3,7 @@ import { signIn, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useState } from 'react';
 import Button from '~/components/Button';
+import Card from '~/components/Card';
 
 type TechnologyCardProps = {
   name: string;
@@ -26,6 +27,7 @@ const Home: NextPage = () => {
           text={'Bruh'}
           // useArrow={true}
         />
+        <Card description="lkfmdkmsklml" title="lkvfvd" imageURL={[]} />
         <button onClick={() => signIn('google')}>SIGN IN</button>
         <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold text-gray-700 font-sudo-title">
           Create{' '}
