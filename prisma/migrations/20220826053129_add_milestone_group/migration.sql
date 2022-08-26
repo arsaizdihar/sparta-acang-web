@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE "User" ADD COLUMN     "milestoneGroup" CHAR(1);
+ALTER TABLE "User" ADD COLUMN     "milestoneGroup" INTEGER;
