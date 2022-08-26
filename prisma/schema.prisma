@@ -38,19 +38,18 @@ model Session {
 }
 
 model User {
-    id              String         @id @default(cuid())
-    name            String
-    email           String         @unique
-    emailVerified   DateTime?
-    image           String?
-    accounts        Account[]
-    sessions        Session[]
-    participationId String?
-    participation   Participation?
-    major           Major
-    classYear       Int
-    milestoneGroup  Int?
-    milestoneVote   MilestoneVote?
+    id             String          @id @default(cuid())
+    name           String
+    email          String          @unique
+    emailVerified  DateTime?
+    image          String?
+    accounts       Account[]
+    sessions       Session[]
+    participation  Participation[]
+    major          Major
+    classYear      Int
+    milestoneGroup Int?
+    milestoneVote  MilestoneVote?
 }
 
 enum Major {
@@ -69,7 +68,9 @@ model VerificationToken {
 model Event {
     id           String          @id @default(cuid())
     slug         String          @unique
-    quota        Int
+    quota19      Int
+    quota20      Int
+    quota21      Int
     participants Participation[]
 }
 
