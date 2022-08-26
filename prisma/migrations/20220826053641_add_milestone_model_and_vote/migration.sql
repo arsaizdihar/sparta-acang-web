@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Milestone" (
-    "id" CHAR(1) NOT NULL,
+    "id" INTEGER NOT NULL,
 
     CONSTRAINT "Milestone_pkey" PRIMARY KEY ("id")
 );
@@ -8,7 +8,7 @@ CREATE TABLE "Milestone" (
 -- CreateTable
 CREATE TABLE "MilestoneVote" (
     "userId" TEXT NOT NULL,
-    "milestoneId" TEXT NOT NULL,
+    "milestoneId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "MilestoneVote_pkey" PRIMARY KEY ("userId")
