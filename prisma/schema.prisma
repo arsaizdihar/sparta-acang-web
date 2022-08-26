@@ -47,15 +47,9 @@ model User {
     sessions        Session[]
     participationId String?
     participation   Participation?
-    gender          Gender         @default(UNKNOWN)
     major           Major
     classYear       Int
-}
-
-enum Gender {
-    MALE
-    FEMALE
-    UNKNOWN
+    milestoneGroup  String?        @db.Char(1)
 }
 
 enum Major {

@@ -5,12 +5,9 @@
   - Made the column `email` on table `User` required. This step will fail if there are existing NULL values in that column.
 
 */
--- CreateEnum
-CREATE TYPE "Gender" AS ENUM ('MALE', 'FEMALE', 'UNKNOWN');
 
 -- AlterTable
-ALTER TABLE "User" ADD COLUMN     "gender" "Gender" NOT NULL DEFAULT 'UNKNOWN',
-ADD COLUMN     "participationId" TEXT,
+ALTER TABLE "User" ADD COLUMN     "participationId" TEXT,
 ALTER COLUMN "name" SET NOT NULL,
 ALTER COLUMN "email" SET NOT NULL;
 
