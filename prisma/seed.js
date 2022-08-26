@@ -11,32 +11,38 @@ const cmsClient = new GraphQLClient(process.env.CMS_ENDPOINT, {
 
 const load = async () => {
   try {
-    await prisma.user.deleteMany();
-    console.log('Deleted records in user table');
+    await prisma.user
+      .deleteMany()
+      .then(({ count }) => console.log(`Deleted ${count} users`));
 
-    await prisma.event.deleteMany();
-    console.log('Deleted records in event table');
+    await prisma.storedUser
+      .deleteMany()
+      .then(({ count }) => console.log(`Deleted ${count} stored users`));
 
-    await prisma.milestone.deleteMany();
-    console.log('Deleted records in milestone table');
+    await prisma.event
+      .deleteMany()
+      .then(({ count }) => console.log(`Deleted ${count} events`));
 
-    await prisma.milestone.createMany({
-      data: Array(23)
-        .fill(0)
-        .map((_, i) => ({ id: i + 1 })),
-    });
-    console.log('Created all milestone groups');
+    await prisma.milestone
+      .deleteMany()
+      .then(({ count }) => console.log(`Deleted ${count} milestone groups`));
 
-    const usersRes = await prisma.user.createMany({
-      data: userData.map((user) => ({
-        classYear: 21,
-        email: user.nim + '@std.stei.itb.ac.id',
-        name: user.nama,
-        milestoneGroup: user.kelompok,
-        major: user.nim.startsWith('135') ? 'IF' : 'STI',
-      })),
-    });
-    console.log(`Created ${usersRes.count} users`);
+    await prisma.milestone
+      .createMany({
+        data: Array(23)
+          .fill(0)
+          .map((_, i) => ({ id: i + 1 })),
+      })
+      .then(() => console.log('Created all milestones group'));
+
+    await prisma.storedUser
+      .createMany({
+        data: userData.map((user) => ({
+          email: user.nim + '@std.stei.itb.ac.id',
+          milestoneGroup: user.kelompok,
+        })),
+      })
+      .then(({ count }) => console.log(`Created ${count} stored users`));
 
     const res = await cmsClient.request(gql`
       query {
@@ -51,11 +57,16 @@ const load = async () => {
     `);
     const eventsSlug = res.events.data.map((e) => e.attributes.slug);
 
-    const eventsRes = await prisma.event.createMany({
-      data: eventsSlug.map((slug) => ({ slug, quota: 0 })),
-    });
-
-    console.log(`Created ${eventsRes.count} events`);
+    await prisma.event
+      .createMany({
+        data: eventsSlug.map((slug) => ({
+          slug,
+          quota21: 0,
+          quota20: 0,
+          quota19: 0,
+        })),
+      })
+      .then(({ count }) => console.log(`Created ${count} events`));
   } catch (e) {
     console.error(e);
     process.exit(1);

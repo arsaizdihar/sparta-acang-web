@@ -52,6 +52,11 @@ model User {
     milestoneVote  MilestoneVote?
 }
 
+model StoredUser {
+    email          String @id
+    milestoneGroup Int
+}
+
 enum Major {
     IF
     STI
