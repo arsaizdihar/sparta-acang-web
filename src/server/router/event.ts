@@ -27,7 +27,7 @@ export const eventRouter = createProtectedRouter().mutation('registerEvent', {
     const participantCount = await ctx.prisma.user.groupBy({
       by: ['classYear'],
       where: {
-        participation: { isNot: null },
+        participation: { eventId: event.id },
       },
       _count: true,
     });
