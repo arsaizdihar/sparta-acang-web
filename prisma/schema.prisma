@@ -47,15 +47,10 @@ model User {
     sessions        Session[]
     participationId String?
     participation   Participation?
-    gender          Gender         @default(UNKNOWN)
     major           Major
     classYear       Int
-}
-
-enum Gender {
-    MALE
-    FEMALE
-    UNKNOWN
+    milestoneGroup  String?        @db.Char(1)
+    milestoneVote   MilestoneVote?
 }
 
 enum Major {
@@ -84,4 +79,17 @@ model Participation {
     eventId   String
     event     Event    @relation(fields: [eventId], references: [id])
     createdAt DateTime @default(now())
+}
+
+model Milestone {
+    id    String          @id @db.Char(1)
+    votes MilestoneVote[]
+}
+
+model MilestoneVote {
+    userId      String    @id
+    user        User      @relation(fields: [userId], references: [id])
+    milestoneId String
+    milestone   Milestone @relation(fields: [milestoneId], references: [id])
+    createdAt   DateTime  @default(now())
 }
