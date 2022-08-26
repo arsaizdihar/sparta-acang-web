@@ -23,7 +23,9 @@ const Card = ({
       <div className="flex flex-col w-full items-center justify-start bg-sudo-grad2 gap-3 pb-5 text-sudo-dark-tan">
         <h2 className="font-sudo-title text-3xl">{title}</h2>
         <p className="font-sudo-body">{description}</p>
-        <Button runOnClick={() => console.log('Bruh')} text={buttonText} />
+        {showButton ? (
+          <Button runOnClick={runOnButtonClick} text={buttonText} />
+        ) : null}
       </div>
     </div>
   );
