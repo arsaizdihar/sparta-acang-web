@@ -24,7 +24,7 @@ const Home: NextPage = () => {
         <Button
           runOnClick={() => console.log('Bruh')}
           text={'Bruh'}
-          useArrow={true}
+          // useArrow={true}
         />
         <button onClick={() => signIn('google')}>SIGN IN</button>
         <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold text-gray-700 font-sudo-title">
