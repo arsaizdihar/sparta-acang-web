@@ -3,6 +3,7 @@ import { signIn, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useState } from 'react';
 import Button from '~/components/Button';
+import Navbar from '~/components/navbar/Navbar';
 
 type TechnologyCardProps = {
   name: string;
@@ -20,6 +21,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Navbar />
       <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-4">
         <Button
           runOnClick={() => console.log('Bruh')}
