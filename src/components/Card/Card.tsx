@@ -51,7 +51,7 @@ const Card = ({
           showFullscreenButton={false}
         />
       </div>
-      <div className="flex flex-col w-full items-center justify-start bg-sudo-grad2 gap-3 pb-5 text-sudo-dark-tan">
+      <div className="flex flex-col w-full items-center justify-start bg-sudo-grad2 gap-3 py-5 px-3 text-sudo-dark-tan">
         <h2 className="font-sudo-title text-3xl">
           Kelompok {nthGroup} - ({projectName})
         </h2>

@@ -1,9 +1,3 @@
-import {
-  faChevronLeft,
-  faChevronRight,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 type NavigationButtonProps = {
   isLeft: boolean;
   onClick: any;
@@ -26,8 +20,7 @@ const NavigationButton = ({
       } text-sudo-dark-tan`}
       onClick={onClick}
     >
-      <FontAwesomeIcon icon={isLeft ? faChevronLeft : faChevronRight} />
-      {/* {isLeft ? '<' : '>'} */}
+      {isLeft ? '<' : '>'}
     </button>
   );
 };
