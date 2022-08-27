@@ -25,6 +25,8 @@ const Home: NextPage = () => {
         <Button
           runOnClick={() => console.log('Bruh')}
           text={'Bruh'}
+          buttonType="cancel"
+
           // useArrow={true}
         />
         <Card
