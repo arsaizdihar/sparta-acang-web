@@ -38,24 +38,23 @@ model Session {
 }
 
 model User {
-    id              String         @id @default(cuid())
-    name            String
-    email           String         @unique
-    emailVerified   DateTime?
-    image           String?
-    accounts        Account[]
-    sessions        Session[]
-    participationId String?
-    participation   Participation?
-    gender          Gender         @default(UNKNOWN)
-    major           Major
-    classYear       Int
+    id             String         @id @default(cuid())
+    name           String
+    email          String         @unique
+    emailVerified  DateTime?
+    image          String?
+    accounts       Account[]
+    sessions       Session[]
+    participation  Participation?
+    major          Major
+    classYear      Int
+    milestoneGroup Int?
+    milestoneVote  MilestoneVote?
 }
 
-enum Gender {
-    MALE
-    FEMALE
-    UNKNOWN
+model StoredUser {
+    email          String @id
+    milestoneGroup Int
 }
 
 enum Major {
@@ -74,14 +73,29 @@ model VerificationToken {
 model Event {
     id           String          @id @default(cuid())
     slug         String          @unique
-    quota        Int
+    quota19      Int
+    quota20      Int
+    quota21      Int
     participants Participation[]
 }
 
 model Participation {
     userId    String   @id
-    user      User     @relation(fields: [userId], references: [id])
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     eventId   String
-    event     Event    @relation(fields: [eventId], references: [id])
+    event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
     createdAt DateTime @default(now())
+}
+
+model Milestone {
+    id    Int             @id
+    votes MilestoneVote[]
+}
+
+model MilestoneVote {
+    userId      String    @id
+    user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    milestoneId Int
+    milestone   Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+    createdAt   DateTime  @default(now())
 }

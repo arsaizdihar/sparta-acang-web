@@ -13,8 +13,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = user.id;
         session.user.classYear = user.classYear as any;
-        session.user.major = user.major as any;
-        session.user.gender = user.gender as any;
+        session.user.milestoneGroup = user.milestoneGroup as any;
       }
       return session;
     },
@@ -31,12 +30,23 @@ export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   adapter: {
     ...PrismaAdapter(prisma),
-    createUser(data) {
+    async createUser(data) {
       const email = data.email as string;
       const classYear = Number(email.substring(3, 5));
       const major = email.substring(0, 3) === '135' ? 'IF' : 'STI';
-      // @ts-ignore
-      return prisma.user.create({ data: { ...data, classYear, major } });
+      let milestoneGroup: number | null | undefined;
+      if (classYear === 21) {
+        milestoneGroup = await prisma.storedUser
+          .findUnique({ where: { email }, select: { milestoneGroup: true } })
+          .then((user) => user?.milestoneGroup);
+        if (milestoneGroup) {
+          await prisma.storedUser.delete({ where: { email } });
+        }
+      }
+      return prisma.user.create({
+        // @ts-ignore
+        data: { ...data, classYear, major, milestoneGroup },
+      });
     },
   },
   providers: [
