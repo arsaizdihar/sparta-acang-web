@@ -27,7 +27,15 @@ const Home: NextPage = () => {
           text={'Bruh'}
           // useArrow={true}
         />
-        <Card description="lkfmdkmsklml" title="lkvfvd" imageURL={[]} />
+        <Card
+          description="lkfmdkmsklml"
+          nthGroup={1}
+          projectName="lkvfvd"
+          imageURLs={[
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.hlbmcguirefarry.com%2Fwp-content%2Fuploads%2Fsites%2F96%2F2019%2F02%2Fplaceholder-16.9.jpg&f=1&nofb=1',
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.migmawei.ca%2Fsystem%2Fwp-content%2Fuploads%2F2017%2F04%2FPlaceholder_16_9-1.png&f=1&nofb=1',
+          ]}
+        />
         <button onClick={() => signIn('google')}>SIGN IN</button>
         <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold text-gray-700 font-sudo-title">
           Create{' '}
