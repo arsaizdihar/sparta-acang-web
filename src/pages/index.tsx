@@ -29,6 +29,13 @@ const Home: NextPage = () => {
 
           // useArrow={true}
         />
+        <Button
+          runOnClick={() => console.log('Bruh')}
+          text={'Bruh'}
+          buttonType="normal"
+
+          // useArrow={true}
+        />
         <Card
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas erat imperdiet sed euismod nisi porta. Magna ac placerat vestibulum lectus mauris ultrices eros in cursus."
           nthGroup={1}
