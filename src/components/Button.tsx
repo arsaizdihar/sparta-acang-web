@@ -19,13 +19,7 @@ const Button = ({
     cancel:
       'bg-sudo-orange text-sudo-dark-tan hover:bg-sudo-grad-btn-cancel outline-sudo-dark-tan',
   } as Record<ButtonType, string>;
-
-  const containerStyling = {
-    normal: 'bg-sudo-dark-tan hover:bg-sudo-dark-brown',
-    cancel: 'bg-sudo-orange hover:bg-sudo-red',
-  } as Record<ButtonType, string>;
   return (
-    // <div className={`rounded-3xl p-0.5 ${containerStyling[buttonType]}`}>
     <button
       onClick={
         runOnClick ??
@@ -38,7 +32,6 @@ const Button = ({
       <p>{text}</p>
       {useArrow ? <p className="font-bold">{`>`}</p> : null}
     </button>
-    // </div>
   );
 };
 
