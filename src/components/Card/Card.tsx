@@ -5,7 +5,7 @@ import NavigationButton from './NavigationButton';
 type CardProps = {
   imageURLs: string[];
   nthGroup: number;
-  projectName: string;
+  appName: string;
   description: string;
   showButton?: boolean;
   runOnButtonClick?: () => void;
@@ -15,7 +15,7 @@ type CardProps = {
 const Card = ({
   imageURLs,
   nthGroup,
-  projectName,
+  appName,
   description,
   buttonText = 'VOTE',
   runOnButtonClick,
@@ -53,7 +53,7 @@ const Card = ({
       </div>
       <div className="flex flex-col w-full items-center justify-start bg-sudo-grad2 gap-3 py-5 px-3 text-sudo-dark-tan">
         <h2 className="font-sudo-title text-3xl">
-          Kelompok {nthGroup} - ({projectName})
+          Kelompok {nthGroup} - ({appName})
         </h2>
         <p className="font-sudo-body">{description}</p>
         {showButton ? (
