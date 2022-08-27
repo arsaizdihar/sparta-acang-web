@@ -3,7 +3,7 @@ import { signIn, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useState } from 'react';
 import Button from '~/components/Button';
-import Card from '~/components/Card';
+import Card from '~/components/Card/Card';
 
 type TechnologyCardProps = {
   name: string;
@@ -28,7 +28,7 @@ const Home: NextPage = () => {
           // useArrow={true}
         />
         <Card
-          description="lkfmdkmsklml"
+          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas erat imperdiet sed euismod nisi porta. Magna ac placerat vestibulum lectus mauris ultrices eros in cursus."
           nthGroup={1}
           projectName="lkvfvd"
           imageURLs={[

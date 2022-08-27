@@ -1,5 +1,6 @@
 import ImageGallery from 'react-image-gallery';
-import Button from './Button';
+import Button from '../Button';
+import NavigationButton from './NavigationButton';
 
 type CardProps = {
   imageURLs: string[];
@@ -20,6 +21,15 @@ const Card = ({
   runOnButtonClick,
   showButton = false,
 }: CardProps) => {
+  const renderNav = (onChange: any, disabled: any, isLeft: boolean) => {
+    return (
+      <NavigationButton
+        isLeft={isLeft}
+        onClick={onChange}
+        disabled={disabled}
+      />
+    );
+  };
   return (
     <div className="rounded-lg overflow-hidden w-full max-w-lg flex flex-col items-center justify-center shadow">
       <div className="w-full">
@@ -29,13 +39,19 @@ const Card = ({
           infinite={true}
           showBullets={true}
           showPlayButton={false}
+          renderRightNav={(onChange: any, disabled: any) =>
+            renderNav(onChange, disabled, false)
+          }
+          renderLeftNav={(onChange: any, disabled: any) =>
+            renderNav(onChange, disabled, true)
+          }
           items={imageURLs.map((imageURL) => {
             return { original: imageURL };
           })}
+          showFullscreenButton={false}
         />
       </div>
-      {/* Carousel here */}
-      <div className="flex flex-col w-full items-center justify-start bg-sudo-grad2 gap-3 pb-5 text-sudo-dark-tan">
+      <div className="flex flex-col w-full items-center justify-start bg-sudo-grad2 gap-3 py-5 px-3 text-sudo-dark-tan">
         <h2 className="font-sudo-title text-3xl">
           Kelompok {nthGroup} - ({projectName})
         </h2>
