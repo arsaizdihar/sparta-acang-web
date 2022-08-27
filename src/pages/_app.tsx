@@ -2,6 +2,7 @@ import { withTRPC } from '@trpc/next';
 import { SessionProvider } from 'next-auth/react';
 import type { AppType } from 'next/dist/shared/lib/utils';
 import superjson from 'superjson';
+import { PageDataProvider } from '~/components/PageDataProvider';
 import type { AppRouter } from '../server/router';
 import '../styles/globals.css';
 
@@ -10,9 +11,11 @@ const MyApp: AppType = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
-      <Component {...pageProps} />
-    </SessionProvider>
+    <PageDataProvider data={pageProps.data}>
+      <SessionProvider session={session}>
+        <Component {...pageProps} />
+      </SessionProvider>
+    </PageDataProvider>
   );
 };
 
