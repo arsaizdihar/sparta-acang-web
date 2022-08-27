@@ -1,6 +1,5 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { getEventParticipants } from '~/utils/server/participation';
 import { createProtectedRouter } from './protected-router';
 
 export const eventRouter = createProtectedRouter().mutation('registerEvent', {
@@ -36,26 +35,20 @@ export const eventRouter = createProtectedRouter().mutation('registerEvent', {
       });
     }
 
-    const { total, registered, classCount, classQuota } =
-      await getEventParticipants(event);
+    const classQuota = event[`quota${user.classYear}`];
+    const classRegistered = await ctx.prisma.participation.count({
+      where: { eventId: event.id, user: { classYear: user.classYear } },
+    });
 
-    if (total < registered) {
-      const isWaiting =
-        classCount[user.classYear] <= classQuota[user.classYear];
+    const isWaiting = classRegistered >= classQuota;
 
-      await ctx.prisma.participation.create({
-        data: {
-          userId: user.id,
-          eventId: event.id,
-        },
-      });
+    await ctx.prisma.participation.create({
+      data: {
+        userId: user.id,
+        eventId: event.id,
+      },
+    });
 
-      return { isWaiting };
-    } else {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'Quota full',
-      });
-    }
+    return { isWaiting };
   },
 });

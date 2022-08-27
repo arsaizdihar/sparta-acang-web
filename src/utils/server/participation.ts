@@ -55,8 +55,6 @@ export async function getEventParticipants(event: Event) {
   return {
     total: quotaTotal,
     registered: quotaUsed,
-    classCount,
-    classQuota,
   };
 }
 
