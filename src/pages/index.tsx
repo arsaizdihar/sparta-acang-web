@@ -3,7 +3,7 @@ import { signIn, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useState } from 'react';
 import Button from '~/components/Button';
-import Card from '~/components/Card';
+import Card from '~/components/Card/Card';
 
 type TechnologyCardProps = {
   name: string;
