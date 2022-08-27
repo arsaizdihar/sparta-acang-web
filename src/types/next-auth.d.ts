@@ -1,4 +1,3 @@
-import { Gender, Major } from '@prisma/client';
 import { DefaultSession } from 'next-auth';
 
 declare module 'next-auth' {
@@ -8,9 +7,8 @@ declare module 'next-auth' {
   interface Session {
     user?: {
       id: string;
-      gender: Gender;
-      major: Major;
       classYear: 18 | 19 | 20 | 21;
+      milestoneGroup?: number;
     } & DefaultSession['user'];
   }
 }

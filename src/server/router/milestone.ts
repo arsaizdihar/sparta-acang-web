@@ -8,10 +8,18 @@ export const milestoneRouter = createProtectedRouter().mutation('vote', {
   }),
   async resolve({ ctx, input }) {
     const user = ctx.session.user;
-    const isVoted =
-      (await ctx.prisma.milestoneVote.count({
-        where: { userId: user.id },
-      })) > 0;
+
+    if (input.id === user.milestoneGroup) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: "You can't vote for your own group",
+      });
+    }
+
+    const isVoted = await ctx.prisma.milestoneVote.count({
+      where: { userId: user.id },
+    });
+
     if (isVoted) {
       throw new TRPCError({
         message: 'You have voted',

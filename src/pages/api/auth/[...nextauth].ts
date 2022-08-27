@@ -13,8 +13,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = user.id;
         session.user.classYear = user.classYear as any;
-        session.user.major = user.major as any;
-        session.user.gender = user.gender as any;
+        session.user.milestoneGroup = user.milestoneGroup as any;
       }
       return session;
     },
