@@ -1,5 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
+import { getEventParticipants } from '~/utils/server/participation';
 import { createProtectedRouter } from './protected-router';
 
 export const eventRouter = createProtectedRouter().mutation('registerEvent', {
@@ -15,6 +16,18 @@ export const eventRouter = createProtectedRouter().mutation('registerEvent', {
 
     const user = ctx.session.user;
 
+    // check if user is already registered to one of all events
+    const isParticipated = await ctx.prisma.user.count({
+      where: { id: user.id, participation: { isNot: null } },
+    });
+
+    if (isParticipated) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'You already registered to one of the events',
+      });
+    }
+
     // disallow class of 2018
     if (user.classYear === 18) {
       throw new TRPCError({
@@ -23,49 +36,19 @@ export const eventRouter = createProtectedRouter().mutation('registerEvent', {
       });
     }
 
-    // get participant count for each class year
-    const participantCount = await ctx.prisma.user.groupBy({
-      by: ['classYear'],
-      where: {
-        participation: { eventId: event.id },
-      },
-      _count: true,
-    });
+    const { total, registered, classCount, classQuota } =
+      await getEventParticipants(event);
 
-    // participants quota for each class
-    const classQuota = {
-      21: event.quota21,
-      20: event.quota20,
-      19: event.quota19,
-    };
+    if (total < registered) {
+      const isWaiting =
+        classCount[user.classYear] <= classQuota[user.classYear];
 
-    // participants count for each class
-    const classCount = {
-      21: event.quota21,
-      20: event.quota20,
-      19: event.quota19,
-    };
-
-    // count the 'non waiting' participants for each class
-    for (const { _count, classYear } of participantCount) {
-      // @ts-ignore
-      classCount[classYear] = min(_count, classCount[classYear]);
-    }
-
-    const quotaTotal = Object.values(classQuota).reduce((a, b) => a + b, 0);
-
-    // total 'non waiting' participants
-    const quotaUsed = Object.values(classCount).reduce((a, b) => a + b, 0);
-
-    if (quotaUsed < quotaTotal) {
       await ctx.prisma.participation.create({
         data: {
           userId: user.id,
           eventId: event.id,
         },
       });
-      const isWaiting =
-        classCount[user.classYear] <= classQuota[user.classYear];
 
       return { isWaiting };
     } else {
