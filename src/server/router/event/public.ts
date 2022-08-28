@@ -5,10 +5,10 @@ import { createRouter } from '../context';
 
 export const eventPublicRouter = createRouter()
   .query('getParticipants', {
-    input: z.object({ id: z.string() }),
+    input: z.object({ slug: z.string() }),
     async resolve({ input, ctx }) {
       const event = await ctx.prisma.event.findUnique({
-        where: { id: input.id },
+        where: { slug: input.slug },
       });
 
       if (!event) {
@@ -20,13 +20,13 @@ export const eventPublicRouter = createRouter()
   })
   .query('getKesan', {
     input: z.object({
-      id: z.string(),
+      slug: z.string(),
       page: z.number().min(1).int().default(1),
     }),
     async resolve({ input, ctx }) {
       const event = await ctx.prisma.event.findUnique({
-        where: { id: input.id },
-        select: { id: true },
+        where: { slug: input.slug },
+        select: { slug: true },
       });
 
       if (!event) {
@@ -34,7 +34,7 @@ export const eventPublicRouter = createRouter()
       }
 
       const kesan = await ctx.prisma.kesanPesan.findMany({
-        where: { eventId: event.id },
+        where: { eventSlug: event.slug },
         skip: (input.page - 1) * 10,
         take: 10,
         select: { userId: true, text: true, user: { select: { name: true } } },
