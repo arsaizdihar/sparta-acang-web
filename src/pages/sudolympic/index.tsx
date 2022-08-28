@@ -1,6 +1,8 @@
 import Head from 'next/head';
+import { useState } from 'react';
 import Documentation from '~/components/Documentation';
 import EventDetails from '~/components/EventDetails.tsx';
+import Modal from '~/components/Modal';
 import Title from '~/components/Title';
 
 export default function Sudolympic() {
@@ -18,10 +20,14 @@ export default function Sudolympic() {
     time: '9.00-16.00',
     openQuota: 5,
     maxQuota: 20,
-    isRegistered: false,
-    register: () => null,
-    cancel: () => null,
   };
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
+
+  // const cancel = () => {
+  //   setModalOpen(!modalOpen);
+  // };
 
   return (
     <>
@@ -33,9 +39,29 @@ export default function Sudolympic() {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <div
+        className={`fixed z-10 top-0 bottom-0 left-0 right-0 ${
+          modalOpen ? '' : 'invisible'
+        } bg-rgba flex items-center justify-center bg-black/30`}
+        onClick={() => setModalOpen(false)}
+      >
+        <Modal
+          buttonText="IYA"
+          runOnButtonClick={() => setIsRegistered(false)}
+          runToClose={() => setModalOpen(false)}
+          text={'Apakah kamu yakin ingin batal mendaftar'}
+        />
+      </div>
+
       <main className="py-5">
         <Title text={data.title} />
-        <EventDetails {...data} />
+        <EventDetails
+          {...data}
+          register={() => setIsRegistered(true)}
+          cancel={() => setModalOpen(true)}
+          isRegistered={isRegistered}
+        />
         <Title text="Dokumentasi" />
         <Documentation />
       </main>
