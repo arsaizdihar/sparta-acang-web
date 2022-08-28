@@ -9,7 +9,7 @@ type RequestParam = {
 const ENDPOINT = env.CMS_ENDPOINT;
 const client = new GraphQLClient(ENDPOINT, {
   headers: {
-    authorization: `Bearer ${env.CMS_API_KEY}`,
+    Authorization: `Bearer ${env.CMS_API_KEY}`,
   },
 });
 

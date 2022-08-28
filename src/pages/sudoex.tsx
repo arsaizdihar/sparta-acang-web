@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Card from '~/components/Card/Card';
-import SearchBar from '~/components/SearchBar';
+import SearchBar from '~/components/SearchBar/SearchBar';
 import Title from '~/components/Title';
 import { MilestoneData } from '~/types/cms';
+import { request } from '~/utils/server/requestCMS';
 
 type Props = {
   allMilestone: MilestoneData[];
@@ -14,14 +15,17 @@ const SudoEx = ({ allMilestone }: Props) => {
     <div className="w-full">
       <div className="flex flex-col items-center justify-start gap-1">
         <Title text="Sudo Ex" />
-        <SearchBar placeholder="Search kelompok" />
+        <SearchBar
+          placeholder="Search kelompok"
+          onClick={(e: any) => console.log(e)}
+        />
         <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 auto-rows-min">
           {shownMilestone.map(
             ({ attributes: { description, appName, group, images } }) => (
               <Card
                 key={group}
                 description={description}
-                imageURLs={images.map(({ attributes: { url } }) => url)}
+                imageURLs={images.data.map(({ attributes: { url } }) => url)}
                 nthGroup={group}
                 appName={appName}
                 showButton={true}
@@ -33,5 +37,37 @@ const SudoEx = ({ allMilestone }: Props) => {
     </div>
   );
 };
+
+export async function getStaticProps() {
+  const query = `{
+    milestones {
+      data {
+        attributes {
+          appName
+          description
+          images {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
+          group
+        }
+      }
+    }
+  }`;
+
+  const result = await request<{ milestones: { data: MilestoneData[] } }>({
+    query,
+  });
+
+  return {
+    props: {
+      allMilestone: result.milestones.data,
+    } as Props,
+  };
+}
 
 export default SudoEx;
