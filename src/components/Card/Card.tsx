@@ -45,9 +45,13 @@ const Card = ({
           renderLeftNav={(onChange: any, disabled: any) =>
             renderNav(onChange, disabled, true)
           }
-          items={imageURLs.map((imageURL) => {
-            return { original: imageURL };
-          })}
+          items={
+            imageURLs.length === 0
+              ? [{ original: '/images/placeholder.png' }]
+              : imageURLs.map((imageURL) => {
+                  return { original: imageURL };
+                })
+          }
           showFullscreenButton={false}
         />
       </div>
