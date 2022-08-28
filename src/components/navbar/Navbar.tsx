@@ -31,7 +31,7 @@ const Navbar = () => {
         open={menuOpen}
         closeMenu={() => setMenuOpen(false)}
       />
-      <div className="flex w-full sticky top-0 items-center h-12 px-[10px] bg-sudo-grad1">
+      <div className="flex w-full sticky top-0 items-center h-12 px-[10px] bg-sudo-grad1 z-[10]">
         <div className="flex-1 md:hidden">
           <MdMenu
             size={38}
