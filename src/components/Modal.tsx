@@ -11,7 +11,12 @@ type Props = {
 
 const Modal = ({ buttonText, runOnButtonClick, runToClose, text }: Props) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-3 relative bg-sudo-grad-modal w-fit p-5 rounded-lg max-w-md">
+    <div
+      className="flex flex-col items-center justify-center gap-3 relative bg-sudo-grad-modal w-fit p-5 rounded-lg max-w-md"
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
       <div className="flex items-center justify-center">
         <div className="h-9">
           <FontAwesomeIcon icon={faExclamationCircle} size="sm" />
