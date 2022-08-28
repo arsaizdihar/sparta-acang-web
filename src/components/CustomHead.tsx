@@ -8,7 +8,7 @@ const CustomHead: React.FC<{
 }> = ({
   title = 'Sudoverse',
   description = 'Acara angkatan SUDO21 yang berperan menjadi wadah untuk menumbuhkan dan meningkatkan rasa kekeluargaan serta kebersamaan antar anggota SUDO21 dan juga dengan warga HMIF melalui aksi yang bermanfaat bagi masyarakat sekitar',
-  imageUrl = 'https://sudoverse.com/images/web-preview.png',
+  imageUrl = 'https://sudoverse.tech/images/web-preview.png',
 }) => {
   return (
     <Head>
