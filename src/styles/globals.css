@@ -13,3 +13,27 @@
     src: url('/fonts/book-antiqua.ttf') format('ttf');
   }
 }
+
+.linear-gradient-card-1 {
+  background: linear-gradient(
+    180deg,
+    rgba(224, 199, 159, 0.35) 27.43%,
+    rgba(224, 199, 159, 0) 100%
+  );
+}
+
+.linear-gradient-card-2 {
+  background: linear-gradient(
+    180deg,
+    rgba(224, 199, 159, 0.75) 30.31%,
+    rgba(224, 199, 159, 0) 131.15%
+  );
+}
+
+.linear-gradient-card-3 {
+  background: linear-gradient(
+    180deg,
+    #c99752 33.06%,
+    rgba(201, 151, 82, 0) 100%
+  );
+}
