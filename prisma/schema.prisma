@@ -50,6 +50,7 @@ model User {
     classYear      Int
     milestoneGroup Int?
     milestoneVote  MilestoneVote?
+    kesanPesan     KesanPesan?
 }
 
 model StoredUser {
@@ -77,6 +78,7 @@ model Event {
     quota20      Int
     quota21      Int
     participants Participation[]
+    kesanPesan   KesanPesan[]
 }
 
 model Participation {
@@ -85,6 +87,8 @@ model Participation {
     eventId   String
     event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
     createdAt DateTime @default(now())
+
+    @@index([createdAt])
 }
 
 model Milestone {
@@ -98,4 +102,16 @@ model MilestoneVote {
     milestoneId Int
     milestone   Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
     createdAt   DateTime  @default(now())
+}
+
+model KesanPesan {
+    userId    String   @id
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    eventId   String
+    event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+    createdAt DateTime @default(now())
+    text      String
+
+    @@unique([userId, eventId])
+    @@index([createdAt])
 }
