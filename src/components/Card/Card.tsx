@@ -59,7 +59,7 @@ const Card = ({
         <h2 className="font-sudo-title text-3xl">
           Kelompok {nthGroup} - ({appName})
         </h2>
-        <p className="font-sudo-body">{description}</p>
+        <p className="font-sudo-body self-start">{description}</p>
         {showButton ? (
           <Button runOnClick={runOnButtonClick} text={buttonText} />
         ) : null}
