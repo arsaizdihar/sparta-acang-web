@@ -12,6 +12,7 @@ module.exports = {
       fontFamily: {
         'sudo-title': "'Hertical Serif', serif",
         'sudo-body': "'Book Antiqua', serif",
+        montserrat: "'Montserrat', sans-serif",
       },
       colors: {
         'sudo-dark-brown': '#4D2A0C',
