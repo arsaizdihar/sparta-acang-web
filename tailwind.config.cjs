@@ -30,6 +30,7 @@ module.exports = {
         'sudo-grad-btn': 'linear-gradient(to top, #4D2A0C, #C89652)',
         'sudo-grad-btn-cancel': 'linear-gradient(to top, #DD3916, #E18838)',
         'sudo-grad-card': 'linear-gradient(to right, #C89652, #F2DF93)',
+        'sudo-grad-modal': 'linear-gradient(to top, #E0C79F, #F2DF93)',
       },
     },
   },
