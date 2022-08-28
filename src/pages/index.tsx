@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import Button from '~/components/Button';
 import Card from '~/components/Card/Card';
+import SearchBar from '~/components/SearchBar/SearchBar';
 
 type TechnologyCardProps = {
   name: string;
@@ -22,6 +23,8 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-4">
+        <SearchBar placeholder="Cari kelompok" />
+
         <Button
           runOnClick={() => console.log('Bruh')}
           text={'Bruh'}
