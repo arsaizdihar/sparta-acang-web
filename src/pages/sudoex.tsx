@@ -21,37 +21,33 @@ const SudoEx = ({ allMilestone }: Props) => {
     return fuse.search(query).map((searchResult) => searchResult.item);
   }
   return (
-    <div className="w-full box-border px-3">
-      <div className="flex flex-col items-center justify-start gap-1">
-        <Title text="Sudo Ex" />
-        <SearchBar
-          placeholder="Search kelompok"
-          runOnSearch={(query: string) => {
-            setShownMilestone(searchFunction(query));
-          }}
-          reset={() => {
-            if (
-              JSON.stringify(shownMilestone) === JSON.stringify(allMilestone)
-            ) {
-              return;
-            }
-            setShownMilestone(allMilestone);
-          }}
-        />
-        <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 auto-rows-min gap-4 justify-center place-items-center items-center">
-          {shownMilestone.map(
-            ({ attributes: { description, appName, group, images } }) => (
-              <Card
-                key={group}
-                description={description}
-                imageURLs={images.data.map(({ attributes: { url } }) => url)}
-                nthGroup={group}
-                appName={appName}
-                showButton={true}
-              />
-            ),
-          )}
-        </div>
+    <div className="flex flex-col items-center justify-start gap-1 pb-8">
+      <Title text="Sudo Ex" />
+      <SearchBar
+        placeholder="Search kelompok"
+        runOnSearch={(query: string) => {
+          setShownMilestone(searchFunction(query));
+        }}
+        reset={() => {
+          if (JSON.stringify(shownMilestone) === JSON.stringify(allMilestone)) {
+            return;
+          }
+          setShownMilestone(allMilestone);
+        }}
+      />
+      <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 auto-rows-min gap-4 justify-center place-items-center items-center">
+        {shownMilestone.map(
+          ({ attributes: { description, appName, group, images } }) => (
+            <Card
+              key={group}
+              description={description}
+              imageURLs={images.data.map(({ attributes: { url } }) => url)}
+              nthGroup={group}
+              appName={appName}
+              showButton={true}
+            />
+          ),
+        )}
       </div>
     </div>
   );
