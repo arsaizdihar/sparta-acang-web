@@ -1,6 +1,7 @@
 import Fuse from 'fuse.js';
 import { useState } from 'react';
 import Card from '~/components/Card/Card';
+import Modal from '~/components/Modal';
 import SearchBar from '~/components/SearchBar/SearchBar';
 import Title from '~/components/Title';
 import { MilestoneData } from '~/types/cms';
@@ -26,9 +27,16 @@ const SudoEx = ({ allMilestone }: Props) => {
       <div
         className={`absolute z-10 top-0 bottom-0 left-0 right-0 ${
           modalOpen ? '' : 'invisible'
-        } bg-black opacity-30 flex items-center justify-center`}
+        } bg-rgba flex items-center justify-center bg-black/30`}
         onClick={() => setModalOpen(false)}
-      ></div>
+      >
+        <Modal
+          buttonText="IYA"
+          runOnButtonClick={() => null}
+          runToClose={() => setModalOpen(false)}
+          text={'Yakin ingin batal vote?'}
+        />
+      </div>
       <div className="flex flex-col items-center justify-start gap-1 pb-8">
         <Title text="Sudo Ex" />
         <SearchBar
