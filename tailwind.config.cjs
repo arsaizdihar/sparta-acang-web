@@ -28,6 +28,7 @@ module.exports = {
         'sudo-grad2': 'linear-gradient(to top, #3A1A0D, #C99752)',
         'sudo-grad3': 'linear-gradient(to top, #4D2A0C, #C99752)',
         'sudo-grad-btn': 'linear-gradient(to top, #4D2A0C, #C89652)',
+        'sudo-grad-btn-cancel': 'linear-gradient(to top, #DD3916, #E18838)',
         'sudo-grad-card': 'linear-gradient(to right, #C89652, #F2DF93)',
       },
     },

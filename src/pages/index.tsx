@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import Button from '~/components/Button';
 import Navbar from '~/components/navbar/Navbar';
+import Card from '~/components/Card/Card';
 
 type TechnologyCardProps = {
   name: string;
@@ -26,7 +27,25 @@ const Home: NextPage = () => {
         <Button
           runOnClick={() => console.log('Bruh')}
           text={'Bruh'}
+          buttonType="cancel"
+
           // useArrow={true}
+        />
+        <Button
+          runOnClick={() => console.log('Bruh')}
+          text={'Bruh'}
+          buttonType="normal"
+
+          // useArrow={true}
+        />
+        <Card
+          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas erat imperdiet sed euismod nisi porta. Magna ac placerat vestibulum lectus mauris ultrices eros in cursus."
+          nthGroup={1}
+          projectName="lkvfvd"
+          imageURLs={[
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.hlbmcguirefarry.com%2Fwp-content%2Fuploads%2Fsites%2F96%2F2019%2F02%2Fplaceholder-16.9.jpg&f=1&nofb=1',
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.migmawei.ca%2Fsystem%2Fwp-content%2Fuploads%2F2017%2F04%2FPlaceholder_16_9-1.png&f=1&nofb=1',
+          ]}
         />
         <button onClick={() => signIn('google')}>SIGN IN</button>
         <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold text-gray-700 font-sudo-title">
