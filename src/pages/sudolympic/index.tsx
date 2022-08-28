@@ -1,3 +1,4 @@
+import Documentation from '~/components/Documentation';
 import EventDetails from '~/components/EventDetails.tsx';
 import Title from '~/components/Title';
 
@@ -24,8 +25,9 @@ export default function Sudolympic() {
   return (
     <>
       <Title text={data.title} />
-
       <EventDetails {...data} />
+      <Title text="Dokumentasi" />
+      <Documentation />
     </>
   );
 }
