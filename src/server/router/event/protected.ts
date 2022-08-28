@@ -6,11 +6,11 @@ import { createProtectedRouter } from '../protected-router';
 export const eventProtectedRouter = createProtectedRouter()
   .mutation('register', {
     input: z.object({
-      id: z.string(),
+      slug: z.string(),
     }),
     async resolve({ input, ctx }) {
       const event = await ctx.prisma.event.findFirst({
-        where: { id: input.id },
+        where: { slug: input.slug },
       });
 
       if (!event) {
@@ -41,7 +41,7 @@ export const eventProtectedRouter = createProtectedRouter()
 
       const classQuota = event[`quota${user.classYear}`];
       const classRegistered = await ctx.prisma.participation.count({
-        where: { eventId: event.id, user: { classYear: user.classYear } },
+        where: { eventSlug: event.slug, user: { classYear: user.classYear } },
       });
 
       const isWaiting = classRegistered >= classQuota;
@@ -49,7 +49,7 @@ export const eventProtectedRouter = createProtectedRouter()
       await ctx.prisma.participation.create({
         data: {
           userId: user.id,
-          eventId: event.id,
+          eventSlug: event.slug,
         },
       });
 
@@ -58,14 +58,14 @@ export const eventProtectedRouter = createProtectedRouter()
   })
   .mutation('addKesanPesan', {
     input: z.object({
-      eventId: z.string(),
+      eventSlug: z.string(),
       text: z.string().min(1),
     }),
     async resolve({ input, ctx }) {
       const user = ctx.session.user;
 
       const isParticipant = await ctx.prisma.participation.count({
-        where: { userId: user.id, eventId: input.eventId },
+        where: { userId: user.id, eventSlug: input.eventSlug },
       });
 
       if (!isParticipant) {
@@ -76,7 +76,7 @@ export const eventProtectedRouter = createProtectedRouter()
       }
 
       const isAlreadyAdded = await ctx.prisma.kesanPesan.count({
-        where: { userId: user.id, eventId: input.eventId },
+        where: { userId: user.id, eventSlug: input.eventSlug },
       });
 
       if (isAlreadyAdded) {
@@ -90,7 +90,7 @@ export const eventProtectedRouter = createProtectedRouter()
         data: {
           text: input.text,
           userId: user.id,
-          eventId: input.eventId,
+          eventSlug: input.eventSlug,
         },
       });
     },
