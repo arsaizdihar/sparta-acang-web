@@ -1,12 +1,14 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import SearchButton from './SearchButton';
 
 interface SearchBarProps {
   placeholder: string;
+  onClick: any;
 }
 
 export default function SearchBar(props: SearchBarProps) {
-  const { placeholder } = props;
+  const { placeholder, onClick } = props;
 
   return (
     <div className="w-fit mx-auto mt-10 mb-7">
@@ -29,12 +31,7 @@ export default function SearchBar(props: SearchBarProps) {
             className="w-full bg-sudo-tan font-sudo-body placeholder-sudo-gradtext-light placeholder:font-sudo-body text-sudo-orange px-3 py-2 rounded-full pl-11 md:pl-6 shadow-lg outline-none focus:outline-sudo-orange focus:placeholder-sudo-orange  "
           />
         </div>
-        <button
-          type="submit"
-          className="hidden w-10 h-10 md:flex md:justify-center md:items-center text-sudo-tan bg-sudo-orange rounded-full shadow-lg hover:bg-[#b87437] transition active:bg-[#966539]"
-        >
-          <FontAwesomeIcon icon={faSearch} size="lg" className="w-5" />
-        </button>
+        <SearchButton onClick={onClick} />
       </form>
     </div>
   );
