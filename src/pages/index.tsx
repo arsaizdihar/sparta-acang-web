@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
 import Image from 'next/image';
 import AboutSudo from '~/components/AboutSudo';
+import CustomHead from '~/components/CustomHead';
 import HomeCardWithOneButton from '~/components/HomeCardWithOneButton';
 import HomeCardWithoutButton from '~/components/HomeCardWithoutButton';
 import HomeCardWithTwoButtons from '~/components/HomeCardWithTwoButtons';
@@ -37,11 +37,7 @@ const Home: NextPage = () => {
   };
   return (
     <>
-      <Head>
-        <title>Sudoverse</title>
-        <meta name="description" content="Acara Angkatan by Sudo" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <CustomHead />
       <main>
         <div className="px-4 pt-10">
           {/* SUDOVERSE SECTION*/}
