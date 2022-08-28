@@ -1,6 +1,6 @@
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Button from './Button';
+import Button from '~/components/Button';
 
 type Props = {
   text: string;
