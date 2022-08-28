@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import Documentation from '~/components/Documentation';
 import EventDetails from '~/components/EventDetails.tsx';
 import Title from '~/components/Title';
@@ -24,10 +25,20 @@ export default function Sudolympic() {
 
   return (
     <>
-      <Title text={data.title} />
-      <EventDetails {...data} />
-      <Title text="Dokumentasi" />
-      <Documentation />
+      <Head>
+        <title>Sudolympic | {data.title}</title>
+        <meta
+          name="description"
+          content="Rangkaian acara berupa Fun Sports dari SUDO. Acara ini bertujuan untuk mendekatkan anggota SUDO, INIT, dan Async lewat olahraga, sekaligus menjadi tempat untuk memberikan donasi bagi orang yang hadir."
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className="py-5">
+        <Title text={data.title} />
+        <EventDetails {...data} />
+        <Title text="Dokumentasi" />
+        <Documentation />
+      </main>
     </>
   );
 }
