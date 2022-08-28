@@ -33,13 +33,20 @@ export const eventPublicRouter = createRouter()
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Event not found' });
       }
 
-      const kesan = await ctx.prisma.kesanPesan.findMany({
-        where: { eventSlug: event.slug },
-        skip: (input.page - 1) * 10,
-        take: 10,
-        select: { userId: true, text: true, user: { select: { name: true } } },
-      });
+      const [kesanPesan, count] = await Promise.all([
+        ctx.prisma.kesanPesan.findMany({
+          where: { eventSlug: event.slug },
+          skip: (input.page - 1) * 10,
+          take: 10,
+          select: {
+            userId: true,
+            text: true,
+            user: { select: { name: true } },
+          },
+        }),
+        ctx.prisma.kesanPesan.count({ where: { eventSlug: event.slug } }),
+      ]);
 
-      return kesan;
+      return { kesanPesan, totalPages: Math.ceil(count / 10) };
     },
   });
