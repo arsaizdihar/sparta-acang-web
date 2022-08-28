@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import Documentation from '~/components/Documentation';
 import EventDetails from '~/components/EventDetails.tsx';
+import KesanPesan from '~/components/KesanPesan';
 import Modal from '~/components/Modal';
 import Title from '~/components/Title';
 
@@ -64,6 +65,8 @@ export default function Sudolympic() {
         />
         <Title text="Dokumentasi" />
         <Documentation />
+        <Title text="Kesan & Pesan" />
+        <KesanPesan />
       </main>
     </>
   );
