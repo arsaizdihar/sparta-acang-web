@@ -62,7 +62,7 @@ const Home: NextPage = () => {
           />
         </div>
         <Count />
-        {session.data && <pre>{JSON.stringify(session.data, null, 2)}</pre>}
+        {/* {session.data && <pre>{JSON.stringify(session.data, null, 2)}</pre>} */}
       </main>
     </>
   );

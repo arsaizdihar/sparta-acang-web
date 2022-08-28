@@ -1,15 +1,18 @@
+import { Session } from 'next-auth';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { MdExpandMore } from 'react-icons/md';
 
-const ProfileDropdown = () => {
-  const dropdownItems = [
-    { text: 'Futsal', href: '/' },
-    { text: 'Basket', href: '/' },
-  ];
+type Props = {
+  signOut: () => void;
+  session: Session;
+};
+
+const ProfileDropdown = ({ signOut, session }: Props) => {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const name = session ? session.user?.name?.split(' ')[1] : '';
 
   useEffect(() => {
     const handleClickOutside = (e: any) => {
@@ -20,7 +23,7 @@ const ProfileDropdown = () => {
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  });
+  }, []);
 
   return (
     <div className="relative font-sudo-title">
@@ -38,15 +41,15 @@ const ProfileDropdown = () => {
           className="rounded-full sudo-dropdown"
           alt="profile picture"
         />
-        <p className="ml-2 sudo-dropdown">SUDO</p>
+        <p className="ml-2 sudo-dropdown">{name}</p>
         <MdExpandMore className="ml-4 sudo-dropdown" />
       </button>
-      <ProfileDropdownMenu open={open} />
+      <ProfileDropdownMenu open={open} signOut={signOut} />
     </div>
   );
 };
 
-const ProfileDropdownMenu = ({ open }: any) => {
+const ProfileDropdownMenu = ({ open, signOut }: any) => {
   return (
     <div
       style={{ display: open ? 'block' : 'none' }}
@@ -57,11 +60,12 @@ const ProfileDropdownMenu = ({ open }: any) => {
         aria-labelledby="dropdownDefault"
       >
         <li>
-          <Link href="/">
-            <a className="sudo-dropdown block py-2 text-xl px-3 hover:bg-sudo-dark-brown/25 ">
-              Log Out
-            </a>
-          </Link>
+          <button
+            className="sudo-dropdown w-full text-left block py-2 text-xl px-3 hover:bg-sudo-dark-brown/25 "
+            onClick={signOut}
+          >
+            Log Out
+          </button>
         </li>
       </ul>
     </div>

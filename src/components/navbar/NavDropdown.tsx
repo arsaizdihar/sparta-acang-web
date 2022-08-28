@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ReactNode, RefObject, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { MdArrowDropDown } from 'react-icons/md';
 
 type NavDropdownProps = {
@@ -8,7 +8,6 @@ type NavDropdownProps = {
 
 const NavDropdown = ({ children }: NavDropdownProps) => {
   const [open, setOpen] = useState(false);
-  const dropDownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (e: any) => {
@@ -32,20 +31,18 @@ const NavDropdown = ({ children }: NavDropdownProps) => {
         {children}
         <MdArrowDropDown className="sudo-dropdown" />
       </button>
-      <NavDropdownMenu ref={dropDownRef} open={open} />
+      <NavDropdownMenu open={open} />
     </div>
   );
 };
 
 type NavDropdownMenuProps = {
   open: boolean;
-  ref: RefObject<HTMLDivElement>;
 };
 
-const NavDropdownMenu = ({ open, ref }: NavDropdownMenuProps) => {
+const NavDropdownMenu = ({ open }: NavDropdownMenuProps) => {
   return (
     <div
-      ref={ref}
       style={{ display: open ? 'block' : 'none' }}
       className="md:absolute mt-[10px] w-[96px] md:bg-sudo-dark-tan md:text-sudo-dark-brown md:shadow-md"
     >
