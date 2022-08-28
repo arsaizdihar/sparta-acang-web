@@ -56,6 +56,45 @@ export const eventProtectedRouter = createProtectedRouter()
       return { isWaiting };
     },
   })
+  .mutation('addKesanPesan', {
+    input: z.object({
+      eventId: z.string(),
+      text: z.string().min(1),
+    }),
+    async resolve({ input, ctx }) {
+      const user = ctx.session.user;
+
+      const isParticipant = await ctx.prisma.participation.count({
+        where: { userId: user.id, eventId: input.eventId },
+      });
+
+      if (!isParticipant) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Only participants can add kesan/pesan.',
+        });
+      }
+
+      const isAlreadyAdded = await ctx.prisma.kesanPesan.count({
+        where: { userId: user.id, eventId: input.eventId },
+      });
+
+      if (isAlreadyAdded) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'You already added kesan/pesan.',
+        });
+      }
+
+      return await ctx.prisma.kesanPesan.create({
+        data: {
+          text: input.text,
+          userId: user.id,
+          eventId: input.eventId,
+        },
+      });
+    },
+  })
   .query('.getRegistered', {
     async resolve({ ctx }) {
       return await getUserParticipation(ctx.session.user);
