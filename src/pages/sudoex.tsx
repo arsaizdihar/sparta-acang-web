@@ -1,12 +1,15 @@
 import Fuse from 'fuse.js';
+import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useQueryClient } from 'react-query';
 import Card from '~/components/Card/Card';
 import Modal from '~/components/Modal';
 import SearchBar from '~/components/SearchBar/SearchBar';
 import Title from '~/components/Title';
 import { MilestoneData } from '~/types/cms';
+import { ButtonType } from '~/types/frontEndTypes';
 import { request } from '~/utils/server/requestCMS';
 import { trpc } from '~/utils/trpc';
 
@@ -21,11 +24,17 @@ const SudoEx = ({ allMilestone }: Props) => {
     keys: ['attributes.appName', 'attributes.description', 'attributes.group'],
   };
   const [modalOpen, setModalOpen] = useState(false);
+  const queryClient = useQueryClient();
   const fuse = new Fuse(allMilestone, searchOptions);
   function searchFunction(query: string) {
     return fuse.search(query).map((searchResult) => searchResult.item);
   }
-  const voteMutation = trpc.useMutation(['milestone.vote']);
+  const voteMutation = trpc.useMutation(['milestone.vote'], {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['milestone.getVote']);
+    },
+  });
+  const voteCancelMutation = trpc.useMutation(['milestone.cancelVote']);
   const {
     data: voteData,
     isLoading: voteDataLoading,
@@ -46,12 +55,27 @@ const SudoEx = ({ allMilestone }: Props) => {
     toast.success(`Berhasil vote untuk kelompok ${group}`);
   }
 
+  async function handleCancelVote(group: number) {}
+
   if (voteDataLoading || sessionStatus === 'loading') {
     return (
       <div className="flex flex-grow items-center justify-center">
         <h3 className="font-sudo-title text-3xl">Loading milestone data</h3>
       </div>
     );
+  }
+
+  function buttonTypeDeterminer(
+    group: number,
+    session: Session | null,
+  ): { buttonType: ButtonType; buttonText: string } {
+    if (session?.user?.milestoneGroup === group) {
+      return { buttonType: 'disabled', buttonText: 'Kamu ada di kelompok ini' };
+    }
+    if (group === voteData?.milestoneGroup) {
+      return { buttonType: 'cancel', buttonText: 'BATAL VOTE' };
+    }
+    return { buttonType: 'normal', buttonText: 'VOTE' };
   }
 
   return (
@@ -92,23 +116,25 @@ const SudoEx = ({ allMilestone }: Props) => {
         ) : null}
         <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 auto-rows-min gap-4 justify-center place-items-center items-center">
           {shownMilestone.map(
-            ({ attributes: { description, appName, group, images } }) => (
-              <Card
-                key={group}
-                description={description}
-                imageURLs={images.data.map(({ attributes: { url } }) => url)}
-                nthGroup={group}
-                appName={appName}
-                showButton={sessionStatus === 'authenticated' ? true : false}
-                buttonType={
-                  group === voteData?.milestoneGroup ? 'cancel' : 'normal'
-                }
-                runOnButtonClick={async () => await handleVote(group)}
-                buttonText={
-                  group === voteData?.milestoneGroup ? 'BATAL VOTE' : 'VOTE'
-                }
-              />
-            ),
+            ({ attributes: { description, appName, group, images } }) => {
+              const { buttonText, buttonType } = buttonTypeDeterminer(
+                group,
+                session,
+              );
+              return (
+                <Card
+                  key={group}
+                  description={description}
+                  imageURLs={images.data.map(({ attributes: { url } }) => url)}
+                  nthGroup={group}
+                  appName={appName}
+                  showButton={sessionStatus === 'authenticated' ? true : false}
+                  buttonType={buttonType}
+                  runOnButtonClick={async () => await handleVote(group)}
+                  buttonText={buttonText}
+                />
+              );
+            },
           )}
         </div>
       </div>
