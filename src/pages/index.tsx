@@ -44,6 +44,7 @@ interface Props {
 const Home: NextPage<Props> = (props) => {
   const { showDonation } = usePageData<{ showDonation: boolean }>();
   const { showMilestone } = usePageData<{ showMilestone: boolean }>();
+  const { showEventRegister } = usePageData<{ showEventRegister: boolean }>();
 
   const Data = {
     sudoverse: {
