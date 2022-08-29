@@ -13,7 +13,7 @@ import QR from '../../public/qr.png';
 
 export const getStaticProps = async () => {
   const showDonation = await getFeatureFlag('DONATION');
-
+  const showMilestone = await getFeatureFlag('MILESTONE_SHOW');
   return {
     props: {
       data: { showDonation },
@@ -23,6 +23,8 @@ export const getStaticProps = async () => {
 
 const Home: NextPage = () => {
   const { showDonation } = usePageData<{ showDonation: boolean }>();
+  const { showMilestone } = usePageData<{ showMilestone: boolean }>();
+
   const Data = {
     sudoverse: {
       title: 'SUDOVERSE',
@@ -81,12 +83,14 @@ const Home: NextPage = () => {
             <RoundedRectangle position="left" />
             <RoundedRectangle position="right" />
             <div className="flex flex-col md:flex-row px-8 my-40 gap-10 justify-center">
-              <HomeCardWithOneButton
-                text="VOTE KARYA"
-                title="Lihat karya-karya SUDO!"
-                paragraph="Pilih karya favoritmu dari karya-karya terbaik SUDO!"
-                nav="/"
-              />
+              {showMilestone && (
+                <HomeCardWithOneButton
+                  text="VOTE KARYA"
+                  title="Lihat karya-karya SUDO!"
+                  paragraph="Pilih karya favoritmu dari karya-karya terbaik SUDO!"
+                  nav="/"
+                />
+              )}
               <HomeCardWithTwoButtons
                 text1="DAFTAR FUTSAL"
                 text2="DAFTAR BASKET"
