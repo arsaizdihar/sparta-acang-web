@@ -80,31 +80,32 @@ const Home: NextPage = () => {
 
         <div>
           {/* NAVIGATION SECTION*/}
-          <div className="flex flex-col mt-10 relative">
-            <TitleSection title="" />
-            <RoundedRectangle position="left" />
-            <RoundedRectangle position="right" />
-            <div className="flex flex-col md:flex-row px-8 my-40 gap-10 justify-center">
-              {showMilestone && (
-                <HomeCardWithOneButton
-                  text="VOTE KARYA"
-                  title="Lihat karya-karya SUDO!"
-                  paragraph="Pilih karya favoritmu dari karya-karya terbaik SUDO!"
-                  nav="/"
-                />
-              )}
-              {showEventRegister && (
-                <HomeCardWithTwoButtons
-                  text1="DAFTAR FUTSAL"
-                  text2="DAFTAR BASKET"
-                  title="Ikuti Fun Sports!"
-                  paragraph="Jangan sampai ketinggalan keseruan rangkaian acara Fun Sports dari SUDOVerse."
-                  nav="/"
-                />
-              )}
+          {(showDonation || showEventRegister) && (
+            <div className="flex flex-col mt-10 relative">
+              <TitleSection title="" />
+              <RoundedRectangle position="left" />
+              <RoundedRectangle position="right" />
+              <div className="flex flex-col md:flex-row px-8 my-40 gap-10 justify-center">
+                {showMilestone && (
+                  <HomeCardWithOneButton
+                    text="VOTE KARYA"
+                    title="Lihat karya-karya SUDO!"
+                    paragraph="Pilih karya favoritmu dari karya-karya terbaik SUDO!"
+                    nav="/"
+                  />
+                )}
+                {showEventRegister && (
+                  <HomeCardWithTwoButtons
+                    text1="DAFTAR FUTSAL"
+                    text2="DAFTAR BASKET"
+                    title="Ikuti Fun Sports!"
+                    paragraph="Jangan sampai ketinggalan keseruan rangkaian acara Fun Sports dari SUDOVerse."
+                    nav="/"
+                  />
+                )}
+              </div>
             </div>
-          </div>
-
+          )}
           {/* DONATION SECTION*/}
           {showDonation && (
             <div className="flex flex-col pb-40">
