@@ -1,4 +1,5 @@
 import ImageGallery from 'react-image-gallery';
+import { ButtonType } from '~/types/frontEndTypes';
 import Button from '../Button';
 import NavigationButton from './NavigationButton';
 
@@ -10,6 +11,7 @@ type CardProps = {
   showButton?: boolean;
   runOnButtonClick?: () => void;
   buttonText?: string;
+  buttonType?: ButtonType;
 };
 
 const Card = ({
@@ -20,6 +22,7 @@ const Card = ({
   buttonText = 'VOTE',
   runOnButtonClick,
   showButton = false,
+  buttonType = 'normal',
 }: CardProps) => {
   const renderNav = (onChange: any, disabled: any, isLeft: boolean) => {
     return (
@@ -61,7 +64,11 @@ const Card = ({
         </h2>
         <p className="font-sudo-body self-start">{description}</p>
         {showButton ? (
-          <Button runOnClick={runOnButtonClick} text={buttonText} />
+          <Button
+            buttonType={buttonType}
+            runOnClick={runOnButtonClick}
+            text={buttonText}
+          />
         ) : null}
       </div>
     </div>
