@@ -5,11 +5,24 @@ import CustomHead from '~/components/CustomHead';
 import HomeCardWithOneButton from '~/components/HomeCardWithOneButton';
 import HomeCardWithoutButton from '~/components/HomeCardWithoutButton';
 import HomeCardWithTwoButtons from '~/components/HomeCardWithTwoButtons';
+import { usePageData } from '~/components/PageDataProvider';
 import RoundedRectangle from '~/components/RoundedRectangle';
 import TitleSection from '~/components/TitleSection';
+import { getFeatureFlag } from '~/utils/server/getFeatureFlag';
 import QR from '../../public/qr.png';
 
+export const getStaticProps = async () => {
+  const showDonation = await getFeatureFlag('DONATION');
+
+  return {
+    props: {
+      data: { showDonation },
+    },
+  };
+};
+
 const Home: NextPage = () => {
+  const { showDonation } = usePageData<{ showDonation: boolean }>();
   const Data = {
     sudoverse: {
       title: 'SUDOVERSE',
@@ -85,30 +98,32 @@ const Home: NextPage = () => {
           </div>
 
           {/* DONATION SECTION*/}
-          <div className="flex flex-col pb-40">
-            <TitleSection title="" />
-            <div className="mt-4 md:mt-32 mb-10 flex flex-col md:flex-row px-4 gap-16 md:gap-4">
-              <div className="flex flex-col gap-4 md:w-2/3 mt-24 text-center md:text-left">
-                <h2 className="text-6xl font-sudo-title">
-                  BERBAGILAH KEBAHAGIAAN!
-                </h2>
-                <p className="font-sudo-body text-2xl">
-                  Sisihkan sebagian dari uangmu ke orang-orang yang membutuhkan.
-                  SuDonation akan menggalang dana untuk memberi sembako ke Panti
-                  Asuhan A, Jatinangor.
-                </p>
-              </div>
-              <div className="w-2/3 md:w-1/3 relative mx-auto md:mx-0">
-                <div className="flex flex-col justify-center gap-4 w-[8rem] mx-auto">
-                  <Image alt="qr" src={QR} />
-                  <p className="text-xl font-sudo-body">
-                    Scan QR code di atas!
+          {showDonation && (
+            <div className="flex flex-col pb-40">
+              <TitleSection title="" />
+              <div className="mt-4 md:mt-32 mb-10 flex flex-col md:flex-row px-4 gap-16 md:gap-4">
+                <div className="flex flex-col gap-4 md:w-2/3 mt-24 text-center md:text-left">
+                  <h2 className="text-6xl font-sudo-title">
+                    BERBAGILAH KEBAHAGIAAN!
+                  </h2>
+                  <p className="font-sudo-body text-2xl">
+                    Sisihkan sebagian dari uangmu ke orang-orang yang
+                    membutuhkan. SuDonation akan menggalang dana untuk memberi
+                    sembako ke Panti Asuhan A, Jatinangor.
                   </p>
                 </div>
-                <div className="z-[-1] w-full h-[234px] absolute linear-gradient-card-3 right-0 top-[5rem] rounded-tl-[150px] rounded-br-[150px]"></div>
+                <div className="w-2/3 md:w-1/3 relative mx-auto md:mx-0">
+                  <div className="flex flex-col justify-center gap-4 w-[8rem] mx-auto">
+                    <Image alt="qr" src={QR} />
+                    <p className="text-xl font-sudo-body">
+                      Scan QR code di atas!
+                    </p>
+                  </div>
+                  <div className="z-[-1] w-full h-[234px] absolute linear-gradient-card-3 right-0 top-[5rem] rounded-tl-[150px] rounded-br-[150px]"></div>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </main>
     </>
