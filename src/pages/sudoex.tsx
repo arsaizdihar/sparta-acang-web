@@ -176,36 +176,14 @@ const SudoEx = ({ allMilestone }: Props) => {
   );
 };
 
-export async function getStaticProps() {
-  const query = `{
-    milestones {
-      data {
-        attributes {
-          appName
-          description
-          images {
-            data {
-              id
-              attributes {
-                url
-              }
-            }
-          }
-          group
-        }
-      }
-    }
-  }`;
-
-  const result = await request<{ milestones: { data: MilestoneData[] } }>({
-    query,
-  });
+export const getStaticProps = async () => {
+  const showMilestone = await getFeatureFlag('MILESTONE_SHOW');
 
   return {
     props: {
-      allMilestone: result.milestones.data,
-    } as Props,
+      data: { showMilestone },
+    },
   };
-}
+};
 
 export default SudoEx;

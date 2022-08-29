@@ -17,7 +17,7 @@ const HomeCardWithOneButton = ({ title, paragraph, text, nav }: Props) => {
     <>
       <div className="px-6 py-20 linear-gradient-card-2 flex flex-col gap-4 rounded-xl md:w-[40%]">
         <h2 className="text-6xl font-sudo-title text-center">{title}</h2>
-        <p className="text-2xl">{paragraph}</p>
+        <p className="text-2xl text-center">{paragraph}</p>
         <div className="w-[8.2rem] mx-auto mt-10">
           <Button text={text} runOnClick={handleClick} useArrow />
         </div>

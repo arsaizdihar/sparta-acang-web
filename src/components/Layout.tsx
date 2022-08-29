@@ -22,7 +22,7 @@ const Layout = ({ children }: Props) => {
           className="-z-10"
           priority
         />
-        <div className="w-full relative mx-auto flex flex-col flex-grow items-center justify-start">
+        <div className="w-full relative mx-auto xl:max-w-screen-xl">
           {children}
         </div>
       </main>

@@ -1,5 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
+import { getFeatureFlag } from '~/utils/server/getFeatureFlag';
 import { getUserParticipation } from '~/utils/server/participation';
 import { createProtectedRouter } from '../protected-router';
 
@@ -9,6 +10,15 @@ export const eventProtectedRouter = createProtectedRouter()
       slug: z.string(),
     }),
     async resolve({ input, ctx }) {
+      const enableEventRegister = await getFeatureFlag('EVENT_REGISTER');
+
+      if (enableEventRegister) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Event registration is not enabled',
+        });
+      }
+
       const event = await ctx.prisma.event.findFirst({
         where: { slug: input.slug },
       });
@@ -63,6 +73,15 @@ export const eventProtectedRouter = createProtectedRouter()
     }),
     async resolve({ input, ctx }) {
       const user = ctx.session.user;
+
+      const enableKesanPesan = await getFeatureFlag('EVENT_KESAN');
+
+      if (!enableKesanPesan) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Kesan pesan is not enabled',
+        });
+      }
 
       const isParticipant = await ctx.prisma.participation.count({
         where: { userId: user.id, eventSlug: input.eventSlug },
