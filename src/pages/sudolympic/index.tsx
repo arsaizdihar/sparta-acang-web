@@ -19,6 +19,7 @@ export default function Sudolympic() {
     ],
     location: 'Saraga',
     time: '9.00-16.00',
+    thumbnailUrl: '/images/futsal.png',
     openQuota: 5,
     maxQuota: 20,
   };

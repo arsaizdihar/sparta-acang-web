@@ -2118,7 +2118,7 @@ react-is@^16.13.1:
 
 react-paginate@^8.1.3:
   version "8.1.3"
-  resolved "https://registry.npmjs.org/react-paginate/-/react-paginate-8.1.3.tgz"
+  resolved "https://registry.yarnpkg.com/react-paginate/-/react-paginate-8.1.3.tgz#cd6f3cb8a56b47617a61a6a52e3d7c662ad9b91b"
   integrity sha512-zBp80DBRcaeBnAeHUfbGKD0XHfbGNUolQ+S60Ymfs8o7rusYaJYZMAt1j93ADDNLlzRmJ0tMF/NeTlcdKf7dlQ==
   dependencies:
     prop-types "^15.6.1"

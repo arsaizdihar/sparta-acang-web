@@ -7,6 +7,7 @@ interface EventDetailsProps {
   time: string;
   openQuota: number;
   maxQuota: number;
+  thumbnailUrl: string;
   isRegistered: boolean;
   register: () => void;
   cancel: () => void;
@@ -20,6 +21,7 @@ export default function EventDetails(props: EventDetailsProps) {
     openQuota,
     maxQuota,
     isRegistered,
+    thumbnailUrl,
     register,
     cancel,
   } = props;
@@ -28,7 +30,7 @@ export default function EventDetails(props: EventDetailsProps) {
     <div className="w-11/12 max-w-4xl h-fit mx-auto md:flex md:flex-row-reverse md:justify-between md:items-top md:gap-3">
       <div className="w-full md:w-7/12 h-fit mb-5">
         <Image
-          src="/images/valorant.png"
+          src={thumbnailUrl}
           alt="thumbnail"
           width="100%"
           height="60%"
