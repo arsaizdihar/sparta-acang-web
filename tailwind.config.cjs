@@ -32,6 +32,13 @@ module.exports = {
         'sudo-grad-btn-cancel': 'linear-gradient(to top, #DD3916, #E18838)',
         'sudo-grad-card': 'linear-gradient(to right, #C89652, #F2DF93)',
         'sudo-grad-modal': 'linear-gradient(to top, #E0C79F, #F2DF93)',
+        'sudo-grad-kesanpesan-input':
+          'linear-gradient(180deg, #C89652 0%, #F2DF93 97.92%, #E0C79F 100%)',
+        'sudo-grad-kesanpesan-card':
+          'linear-gradient(96.86deg, #C89652 0%, #F2DF93 100%)',
+      },
+      boxShadow: {
+        textarea: '0 2px 4px 0 rgb(0 0 0 / 0.25)',
       },
     },
   },
