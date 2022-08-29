@@ -15,6 +15,7 @@ export const getStaticProps = async () => {
   const showDonation = await getFeatureFlag('DONATION');
   const showMilestone = await getFeatureFlag('MILESTONE_SHOW');
   const showEventRegister = await getFeatureFlag('EVENT_REGISTER');
+  
   return {
     props: {
       data: { showDonation, showMilestone, showEventRegister },
