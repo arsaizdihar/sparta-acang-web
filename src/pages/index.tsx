@@ -15,17 +15,35 @@ export const getStaticProps = async () => {
   const showDonation = await getFeatureFlag('DONATION');
   const showMilestone = await getFeatureFlag('MILESTONE_SHOW');
   const showEventRegister = await getFeatureFlag('EVENT_REGISTER');
+
+  let text1 = '';
+  let text2 = '';
+
+  if (showEventRegister) {
+    text1 = 'DAFTAR FUTSAL';
+    text2 = 'DAFTAR BASKET';
+  } else {
+    text1 = 'FUTSAL';
+    text2 = 'BASKET';
+  }
+
   return {
     props: {
       data: { showDonation, showMilestone, showEventRegister },
+      text1,
+      text2,
     },
   };
 };
 
-const Home: NextPage = () => {
+interface Props {
+  text1: string;
+  text2: string;
+}
+
+const Home: NextPage<Props> = (props) => {
   const { showDonation } = usePageData<{ showDonation: boolean }>();
   const { showMilestone } = usePageData<{ showMilestone: boolean }>();
-  const { showEventRegister } = usePageData<{ showEventRegister: boolean }>();
 
   const Data = {
     sudoverse: {
@@ -52,6 +70,7 @@ const Home: NextPage = () => {
       ],
     },
   };
+
   return (
     <>
       <CustomHead />
@@ -80,32 +99,29 @@ const Home: NextPage = () => {
 
         <div>
           {/* NAVIGATION SECTION*/}
-          {(showDonation || showEventRegister) && (
-            <div className="flex flex-col mt-10 relative">
-              <TitleSection title="" />
-              <RoundedRectangle position="left" />
-              <RoundedRectangle position="right" />
-              <div className="flex flex-col md:flex-row px-8 my-40 gap-10 justify-center">
-                {showMilestone && (
-                  <HomeCardWithOneButton
-                    text="VOTE KARYA"
-                    title="Lihat karya-karya SUDO!"
-                    paragraph="Pilih karya favoritmu dari karya-karya terbaik SUDO!"
-                    nav="/"
-                  />
-                )}
-                {showEventRegister && (
-                  <HomeCardWithTwoButtons
-                    text1="DAFTAR FUTSAL"
-                    text2="DAFTAR BASKET"
-                    title="Ikuti Fun Sports!"
-                    paragraph="Jangan sampai ketinggalan keseruan rangkaian acara Fun Sports dari SUDOVerse."
-                    nav="/"
-                  />
-                )}
-              </div>
+          <div className="flex flex-col mt-10 relative">
+            <TitleSection title="" />
+            <RoundedRectangle position="left" />
+            <RoundedRectangle position="right" />
+            <div className="flex flex-col md:flex-row px-8 my-40 gap-10 justify-center">
+              {showMilestone && (
+                <HomeCardWithOneButton
+                  text="VOTE KARYA"
+                  title="Lihat karya-karya SUDO!"
+                  paragraph="Pilih karya favoritmu dari karya-karya terbaik SUDO!"
+                  nav="/"
+                />
+              )}
+              <HomeCardWithTwoButtons
+                text1={props.text1}
+                text2={props.text2}
+                title="Ikuti Fun Sports!"
+                paragraph="Jangan sampai ketinggalan keseruan rangkaian acara Fun Sports dari SUDOVerse."
+                nav="/"
+              />
             </div>
-          )}
+          </div>
+
           {/* DONATION SECTION*/}
           {showDonation && (
             <div className="flex flex-col pb-40">
