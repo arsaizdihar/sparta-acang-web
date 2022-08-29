@@ -105,7 +105,7 @@ const SudoEx = ({ allMilestone }: Props) => {
                 }
                 runOnButtonClick={async () => await handleVote(group)}
                 buttonText={
-                  group === voteData?.milestoneGroup ? 'VOTE' : 'BATAL VOTE'
+                  group === voteData?.milestoneGroup ? 'BATAL VOTE' : 'VOTE'
                 }
               />
             ),
