@@ -5,7 +5,6 @@ export const featureFlags = [
   'MILESTONE_VOTE',
   'EVENT_REGISTER',
   'EVENT_KESAN',
-  'DONATION',
 ] as const;
 
 export type FeatureFlag = typeof featureFlags[number];

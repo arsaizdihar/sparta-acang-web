@@ -41,8 +41,8 @@ const handler: NextApiHandler = async (req, res) => {
     let listUnvalidate: string[] = [];
 
     switch (name) {
-      case 'DONATION':
-        listUnvalidate = ['/'];
+      case 'MILESTONE_SHOW':
+        listUnvalidate = ['/', '/sudoex'];
         break;
       default:
         break;
