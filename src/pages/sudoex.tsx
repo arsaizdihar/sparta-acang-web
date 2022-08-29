@@ -19,6 +19,7 @@ type Props = {
 
 const SudoEx = ({ allMilestone }: Props) => {
   const [shownMilestone, setShownMilestone] = useState(allMilestone);
+  const [processingSomething, setProcessingSomething] = useState(false);
   const searchOptions = {
     includeScore: true,
     keys: ['attributes.appName', 'attributes.description', 'attributes.group'],
@@ -49,7 +50,9 @@ const SudoEx = ({ allMilestone }: Props) => {
 
   async function handleVote(group: number) {
     const loadingToast = toast.loading(`Sedang vote untuk kelompok ${group}`);
+    setProcessingSomething(true);
     const { valueOf } = await voteMutation.mutateAsync({ id: group });
+    setProcessingSomething(false);
     toast.dismiss(loadingToast);
     if (!valueOf) {
       toast.error("Failed to vote because you've already voted");
@@ -62,11 +65,13 @@ const SudoEx = ({ allMilestone }: Props) => {
   async function handleCancelVote() {
     const loadingToast = toast.loading(`Sedang membatalkan vote anda`);
     let error = false;
+    setProcessingSomething(true);
     try {
       await voteCancelMutation.mutateAsync();
     } catch (error) {
       error = true;
     }
+    setProcessingSomething(false);
     toast.dismiss(loadingToast);
     if (error) {
       toast.error('Failed to cancel your vote because you have not voted');
@@ -158,7 +163,7 @@ const SudoEx = ({ allMilestone }: Props) => {
                   nthGroup={group}
                   appName={appName}
                   showButton={sessionStatus === 'authenticated' ? true : false}
-                  buttonType={buttonType}
+                  buttonType={processingSomething ? 'disabled' : buttonType}
                   runOnButtonClick={runOnButtonClick}
                   buttonText={buttonText}
                 />
