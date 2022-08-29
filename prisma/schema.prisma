@@ -51,6 +51,7 @@ model User {
     milestoneGroup Int?
     milestoneVote  MilestoneVote?
     kesanPesan     KesanPesan?
+    isAdmin        Boolean        @default(false)
 }
 
 model StoredUser {
@@ -113,4 +114,9 @@ model KesanPesan {
 
     @@unique([userId, eventSlug])
     @@index([createdAt])
+}
+
+model FeatureFlag {
+    name  String  @id
+    value Boolean
 }
