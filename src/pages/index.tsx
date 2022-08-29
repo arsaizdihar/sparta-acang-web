@@ -1,5 +1,6 @@
-import type { NextPage } from 'next';
+import { NextPage } from 'next';
 import Image from 'next/image';
+import QR from '~/../public/qr.png';
 import AboutSudo from '~/components/AboutSudo';
 import CustomHead from '~/components/CustomHead';
 import HomeCardWithOneButton from '~/components/HomeCardWithOneButton';
@@ -9,29 +10,16 @@ import { usePageData } from '~/components/PageDataProvider';
 import RoundedRectangle from '~/components/RoundedRectangle';
 import TitleSection from '~/components/TitleSection';
 import { getFeatureFlag } from '~/utils/server/getFeatureFlag';
-import QR from '../../public/qr.png';
 
 export const getStaticProps = async () => {
-  const showDonation = await getFeatureFlag('DONATION');
-  const showMilestone = await getFeatureFlag('MILESTONE_SHOW');
-  const showEventRegister = await getFeatureFlag('EVENT_REGISTER');
-
-  let text1 = '';
-  let text2 = '';
-
-  if (showEventRegister) {
-    text1 = 'DAFTAR FUTSAL';
-    text2 = 'DAFTAR BASKET';
-  } else {
-    text1 = 'FUTSAL';
-    text2 = 'BASKET';
-  }
+  const [showMilestone, showEventRegister] = await Promise.all([
+    getFeatureFlag('MILESTONE_SHOW'),
+    getFeatureFlag('EVENT_REGISTER'),
+  ]);
 
   return {
     props: {
-      data: { showDonation, showMilestone, showEventRegister },
-      text1,
-      text2,
+      data: { showMilestone, showEventRegister },
     },
   };
 };
@@ -42,7 +30,6 @@ interface Props {
 }
 
 const Home: NextPage<Props> = (props) => {
-  const { showDonation } = usePageData<{ showDonation: boolean }>();
   const { showMilestone } = usePageData<{ showMilestone: boolean }>();
   const { showEventRegister } = usePageData<{ showEventRegister: boolean }>();
 
@@ -114,8 +101,8 @@ const Home: NextPage<Props> = (props) => {
                 />
               )}
               <HomeCardWithTwoButtons
-                text1={props.text1}
-                text2={props.text2}
+                text1={showEventRegister ? 'DAFTAR FUTSAL' : 'FUTSAL'}
+                text2={showEventRegister ? 'DAFTAR BASKET' : 'BASKET'}
                 title="Ikuti Fun Sports!"
                 paragraph="Jangan sampai ketinggalan keseruan rangkaian acara Fun Sports dari SUDOVerse."
                 nav="/"
@@ -124,32 +111,30 @@ const Home: NextPage<Props> = (props) => {
           </div>
 
           {/* DONATION SECTION*/}
-          {showDonation && (
-            <div className="flex flex-col pb-40">
-              <TitleSection title="" />
-              <div className="mt-4 md:mt-32 mb-10 flex flex-col md:flex-row px-4 gap-16 md:gap-4">
-                <div className="flex flex-col gap-4 md:w-2/3 mt-24 text-center md:text-left">
-                  <h2 className="text-6xl font-sudo-title">
-                    BERBAGILAH KEBAHAGIAAN!
-                  </h2>
-                  <p className="font-sudo-body text-2xl">
-                    Sisihkan sebagian dari uangmu ke orang-orang yang
-                    membutuhkan. SuDonation akan menggalang dana untuk memberi
-                    sembako ke Panti Asuhan A, Jatinangor.
+          <div className="flex flex-col pb-40">
+            <TitleSection title="" />
+            <div className="mt-4 md:mt-32 mb-10 flex flex-col md:flex-row px-4 gap-16 md:gap-4">
+              <div className="flex flex-col gap-4 md:w-2/3 mt-24 text-center md:text-left">
+                <h2 className="text-6xl font-sudo-title">
+                  BERBAGILAH KEBAHAGIAAN!
+                </h2>
+                <p className="font-sudo-body text-2xl">
+                  Sisihkan sebagian dari uangmu ke orang-orang yang membutuhkan.
+                  SuDonation akan menggalang dana untuk memberi sembako ke Panti
+                  Asuhan A, Jatinangor.
+                </p>
+              </div>
+              <div className="w-2/3 md:w-1/3 relative mx-auto md:mx-0">
+                <div className="flex flex-col justify-center gap-4 w-[8rem] mx-auto">
+                  <Image alt="qr" src={QR} />
+                  <p className="text-xl font-sudo-body">
+                    Scan QR code di atas!
                   </p>
                 </div>
-                <div className="w-2/3 md:w-1/3 relative mx-auto md:mx-0">
-                  <div className="flex flex-col justify-center gap-4 w-[8rem] mx-auto">
-                    <Image alt="qr" src={QR} />
-                    <p className="text-xl font-sudo-body">
-                      Scan QR code di atas!
-                    </p>
-                  </div>
-                  <div className="z-[-1] w-full h-[234px] absolute linear-gradient-card-3 right-0 top-[5rem] rounded-tl-[150px] rounded-br-[150px]"></div>
-                </div>
+                <div className="z-[-1] w-full h-[234px] absolute linear-gradient-card-3 right-0 top-[5rem] rounded-tl-[150px] rounded-br-[150px]"></div>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </main>
     </>

@@ -15,7 +15,6 @@ const load = async () => {
         { name: 'MILESTONE_VOTE', value: false },
         { name: 'EVENT_REGISTER', value: false },
         { name: 'EVENT_KESAN', value: false },
-        { name: 'DONATION', value: false },
       ],
     });
     console.log('Seeded feature flags');
