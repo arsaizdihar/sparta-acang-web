@@ -34,7 +34,11 @@ const SudoEx = ({ allMilestone }: Props) => {
       queryClient.invalidateQueries(['milestone.getVote']);
     },
   });
-  const voteCancelMutation = trpc.useMutation(['milestone.cancelVote']);
+  const voteCancelMutation = trpc.useMutation(['milestone.cancelVote'], {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['milestone.getVote']);
+    },
+  });
   const {
     data: voteData,
     isLoading: voteDataLoading,
@@ -55,7 +59,22 @@ const SudoEx = ({ allMilestone }: Props) => {
     toast.success(`Berhasil vote untuk kelompok ${group}`);
   }
 
-  async function handleCancelVote(group: number) {}
+  async function handleCancelVote() {
+    const loadingToast = toast.loading(`Sedang membatalkan vote anda`);
+    let error = false;
+    try {
+      await voteCancelMutation.mutateAsync();
+    } catch (error) {
+      error = true;
+    }
+    toast.dismiss(loadingToast);
+    if (error) {
+      toast.error('Failed to cancel your vote because you have not voted');
+      return;
+    }
+
+    toast.success('Successfully cancelled your vote');
+  }
 
   if (voteDataLoading || sessionStatus === 'loading') {
     return (
@@ -65,30 +84,42 @@ const SudoEx = ({ allMilestone }: Props) => {
     );
   }
 
-  function buttonTypeDeterminer(
+  function buttonPropsDeterminer(
     group: number,
     session: Session | null,
-  ): { buttonType: ButtonType; buttonText: string } {
+  ): {
+    buttonType: ButtonType;
+    buttonText: string;
+    runOnButtonClick?: () => void;
+  } {
     if (session?.user?.milestoneGroup === group) {
       return { buttonType: 'disabled', buttonText: 'Kamu ada di kelompok ini' };
     }
     if (group === voteData?.milestoneGroup) {
-      return { buttonType: 'cancel', buttonText: 'BATAL VOTE' };
+      return {
+        buttonType: 'cancel',
+        buttonText: 'BATAL VOTE',
+        runOnButtonClick: () => setModalOpen(true),
+      };
     }
-    return { buttonType: 'normal', buttonText: 'VOTE' };
+    return {
+      buttonType: 'normal',
+      buttonText: 'VOTE',
+      runOnButtonClick: async () => await handleVote(group),
+    };
   }
 
   return (
     <>
       <div
-        className={`absolute z-10 top-0 bottom-0 left-0 right-0 ${
+        className={`fixed z-10 top-0 bottom-0 left-0 right-0 ${
           modalOpen ? '' : 'invisible'
         } bg-rgba flex items-center justify-center bg-black/30`}
         onClick={() => setModalOpen(false)}
       >
         <Modal
           buttonText="IYA"
-          runOnButtonClick={() => null}
+          runOnButtonClick={handleCancelVote}
           runToClose={() => setModalOpen(false)}
           text={'Yakin ingin batal vote?'}
         />
@@ -117,10 +148,8 @@ const SudoEx = ({ allMilestone }: Props) => {
         <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 auto-rows-min gap-4 justify-center place-items-center items-center">
           {shownMilestone.map(
             ({ attributes: { description, appName, group, images } }) => {
-              const { buttonText, buttonType } = buttonTypeDeterminer(
-                group,
-                session,
-              );
+              const { buttonText, buttonType, runOnButtonClick } =
+                buttonPropsDeterminer(group, session);
               return (
                 <Card
                   key={group}
@@ -130,7 +159,7 @@ const SudoEx = ({ allMilestone }: Props) => {
                   appName={appName}
                   showButton={sessionStatus === 'authenticated' ? true : false}
                   buttonType={buttonType}
-                  runOnButtonClick={async () => await handleVote(group)}
+                  runOnButtonClick={runOnButtonClick}
                   buttonText={buttonText}
                 />
               );
