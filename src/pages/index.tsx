@@ -1,15 +1,38 @@
-import type { NextPage } from 'next';
+import { NextPage } from 'next';
 import Image from 'next/image';
+import QR from '~/../public/qr.png';
 import AboutSudo from '~/components/AboutSudo';
 import CustomHead from '~/components/CustomHead';
 import HomeCardWithOneButton from '~/components/HomeCardWithOneButton';
 import HomeCardWithoutButton from '~/components/HomeCardWithoutButton';
 import HomeCardWithTwoButtons from '~/components/HomeCardWithTwoButtons';
+import { usePageData } from '~/components/PageDataProvider';
 import RoundedRectangle from '~/components/RoundedRectangle';
 import TitleSection from '~/components/TitleSection';
-import QR from '../../public/qr.png';
+import { getFeatureFlag } from '~/utils/server/getFeatureFlag';
 
-const Home: NextPage = () => {
+export const getStaticProps = async () => {
+  const [showMilestone, showEventRegister] = await Promise.all([
+    getFeatureFlag('MILESTONE_SHOW'),
+    getFeatureFlag('EVENT_REGISTER'),
+  ]);
+
+  return {
+    props: {
+      data: { showMilestone, showEventRegister },
+    },
+  };
+};
+
+interface Props {
+  text1: string;
+  text2: string;
+}
+
+const Home: NextPage<Props> = (props) => {
+  const { showMilestone } = usePageData<{ showMilestone: boolean }>();
+  const { showEventRegister } = usePageData<{ showEventRegister: boolean }>();
+
   const Data = {
     sudoverse: {
       title: 'SUDOVERSE',
@@ -35,6 +58,7 @@ const Home: NextPage = () => {
       ],
     },
   };
+
   return (
     <>
       <CustomHead />
@@ -68,15 +92,17 @@ const Home: NextPage = () => {
             <RoundedRectangle position="left" />
             <RoundedRectangle position="right" />
             <div className="flex flex-col md:flex-row px-8 my-40 gap-10 justify-center">
-              <HomeCardWithOneButton
-                text="VOTE KARYA"
-                title="Lihat karya-karya SUDO!"
-                paragraph="Pilih karya favoritmu dari karya-karya terbaik SUDO!"
-                nav="/"
-              />
+              {showMilestone && (
+                <HomeCardWithOneButton
+                  text="VOTE KARYA"
+                  title="Lihat karya-karya SUDO!"
+                  paragraph="Pilih karya favoritmu dari karya-karya terbaik SUDO!"
+                  nav="/"
+                />
+              )}
               <HomeCardWithTwoButtons
-                text1="DAFTAR FUTSAL"
-                text2="DAFTAR BASKET"
+                text1={showEventRegister ? 'DAFTAR FUTSAL' : 'FUTSAL'}
+                text2={showEventRegister ? 'DAFTAR BASKET' : 'BASKET'}
                 title="Ikuti Fun Sports!"
                 paragraph="Jangan sampai ketinggalan keseruan rangkaian acara Fun Sports dari SUDOVerse."
                 nav="/"

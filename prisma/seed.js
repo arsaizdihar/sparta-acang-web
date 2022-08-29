@@ -10,6 +10,10 @@ const cmsClient = new GraphQLClient(process.env.CMS_ENDPOINT, {
 });
 
 const load = async () => {
+  if (!process.argv.includes('--force')) {
+    console.log('You must pass --force to seed the database');
+    process.exit(1);
+  }
   try {
     await prisma.user
       .deleteMany()

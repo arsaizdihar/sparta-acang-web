@@ -1,4 +1,16 @@
+import { getFeatureFlag } from '~/utils/server/getFeatureFlag';
+
 type Props = {};
+
+export const getStaticProps = async () => {
+  const showMilestone = await getFeatureFlag('MILESTONE_SHOW');
+
+  return {
+    props: {
+      data: { showMilestone },
+    },
+  };
+};
 
 const SudoEx = (props: Props) => {
   return (

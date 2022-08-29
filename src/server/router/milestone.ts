@@ -1,5 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
+import { getFeatureFlag } from '~/utils/server/getFeatureFlag';
 import { createProtectedRouter } from './protected-router';
 
 export const milestoneRouter = createProtectedRouter()
@@ -9,6 +10,15 @@ export const milestoneRouter = createProtectedRouter()
     }),
     async resolve({ ctx, input }) {
       const user = ctx.session.user;
+
+      const enableMilestoneVote = await getFeatureFlag('MILESTONE_VOTE');
+
+      if (!enableMilestoneVote) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Milestone voting is not enabled',
+        });
+      }
 
       if (input.id === user.milestoneGroup) {
         throw new TRPCError({
@@ -31,6 +41,22 @@ export const milestoneRouter = createProtectedRouter()
         data: { userId: user.id, milestoneId: input.id },
       });
       return true;
+    },
+  })
+  .mutation('cancelVote', {
+    async resolve({ ctx }) {
+      const vote = await ctx.prisma.milestoneVote.findUnique({
+        where: { userId: ctx.session.user.id },
+      });
+      if (!vote) {
+        throw new TRPCError({
+          message: 'You have not voted',
+          code: 'BAD_REQUEST',
+        });
+      }
+      return await ctx.prisma.milestoneVote.delete({
+        where: { userId: vote.userId },
+      });
     },
   })
   .query('getVote', {
