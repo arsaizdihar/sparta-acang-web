@@ -44,15 +44,19 @@ const handler: NextApiHandler = async (req, res) => {
       case 'MILESTONE_SHOW':
         listUnvalidate = ['/', '/sudoex'];
         break;
+      case 'EVENT_REGISTER':
+        listUnvalidate = ['/'];
       default:
         break;
     }
     await Promise.all(listUnvalidate.map((path) => res.revalidate(path)));
 
-    return await prisma.featureFlag.update({
-      where: { name },
-      data: { value },
-    });
+    return res.json(
+      await prisma.featureFlag.update({
+        where: { name },
+        data: { value },
+      }),
+    );
   } catch (err) {
     res.status(400).json(err);
     return;
