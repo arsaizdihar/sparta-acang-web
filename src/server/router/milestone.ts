@@ -33,6 +33,22 @@ export const milestoneRouter = createProtectedRouter()
       return true;
     },
   })
+  .mutation('cancelVote', {
+    async resolve({ ctx }) {
+      const vote = await ctx.prisma.milestoneVote.findUnique({
+        where: { userId: ctx.session.user.id },
+      });
+      if (!vote) {
+        throw new TRPCError({
+          message: 'You have not voted',
+          code: 'BAD_REQUEST',
+        });
+      }
+      return await ctx.prisma.milestoneVote.delete({
+        where: { userId: vote.userId },
+      });
+    },
+  })
   .query('getVote', {
     async resolve({ ctx }) {
       const milestoneVote = await ctx.prisma.milestoneVote.findFirst({
