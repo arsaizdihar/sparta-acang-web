@@ -1,5 +1,6 @@
-import type { NextPage } from 'next';
+import { NextPage } from 'next';
 import Image from 'next/image';
+import QR from '~/../public/qr.png';
 import AboutSudo from '~/components/AboutSudo';
 import CustomHead from '~/components/CustomHead';
 import HomeCardWithOneButton from '~/components/HomeCardWithOneButton';
@@ -9,11 +10,12 @@ import { usePageData } from '~/components/PageDataProvider';
 import RoundedRectangle from '~/components/RoundedRectangle';
 import TitleSection from '~/components/TitleSection';
 import { getFeatureFlag } from '~/utils/server/getFeatureFlag';
-import QR from '../../public/qr.png';
 
 export const getStaticProps = async () => {
-  const showMilestone = await getFeatureFlag('MILESTONE_SHOW');
-  const showEventRegister = await getFeatureFlag('EVENT_REGISTER');
+  const [showMilestone, showEventRegister] = await Promise.all([
+    getFeatureFlag('MILESTONE_SHOW'),
+    getFeatureFlag('EVENT_REGISTER'),
+  ]);
 
   return {
     props: {
@@ -22,7 +24,12 @@ export const getStaticProps = async () => {
   };
 };
 
-const Home: NextPage = () => {
+interface Props {
+  text1: string;
+  text2: string;
+}
+
+const Home: NextPage<Props> = (props) => {
   const { showMilestone } = usePageData<{ showMilestone: boolean }>();
   const { showEventRegister } = usePageData<{ showEventRegister: boolean }>();
 
@@ -51,6 +58,7 @@ const Home: NextPage = () => {
       ],
     },
   };
+
   return (
     <>
       <CustomHead />
@@ -92,15 +100,13 @@ const Home: NextPage = () => {
                   nav="/"
                 />
               )}
-              {showEventRegister && (
-                <HomeCardWithTwoButtons
-                  text1="DAFTAR FUTSAL"
-                  text2="DAFTAR BASKET"
-                  title="Ikuti Fun Sports!"
-                  paragraph="Jangan sampai ketinggalan keseruan rangkaian acara Fun Sports dari SUDOVerse."
-                  nav="/"
-                />
-              )}
+              <HomeCardWithTwoButtons
+                text1={showEventRegister ? 'DAFTAR FUTSAL' : 'FUTSAL'}
+                text2={showEventRegister ? 'DAFTAR BASKET' : 'BASKET'}
+                title="Ikuti Fun Sports!"
+                paragraph="Jangan sampai ketinggalan keseruan rangkaian acara Fun Sports dari SUDOVerse."
+                nav="/"
+              />
             </div>
           </div>
 
