@@ -10,7 +10,9 @@ export const PageDataProvider = ({
   data: any;
 }) => {
   return (
-    <PageDataContext.Provider value={data}>{children}</PageDataContext.Provider>
+    <PageDataContext.Provider value={data ?? {}}>
+      {children}
+    </PageDataContext.Provider>
   );
 };
 

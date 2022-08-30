@@ -48,14 +48,14 @@ const NavDropdownMenu = ({ open }: NavDropdownMenuProps) => {
     >
       <ul className="text-sm" aria-labelledby="dropdownDefault">
         <li>
-          <Link href="/">
+          <Link href="/sudolympic/futsal">
             <a className="sudo-dropdown block py-2 text-xl px-3 hover:bg-sudo-dark-brown/25 ">
               Futsal
             </a>
           </Link>
         </li>
         <li>
-          <Link href="/">
+          <Link href="/sudolympic/basket">
             <a className="sudo-dropdown block py-2 text-xl px-3 hover:bg-sudo-dark-brown/25 ">
               Basket
             </a>

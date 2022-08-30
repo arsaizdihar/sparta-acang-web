@@ -50,6 +50,10 @@ model User {
     classYear      Int
     milestoneGroup Int?
     milestoneVote  MilestoneVote?
+    kesanPesan     KesanPesan?    @relation(name: "kesanPesan")
+    isAdmin        Boolean        @default(false)
+    upvotes        KesanPesan[]   @relation(name: "upvotes")
+    downvotes      KesanPesan[]   @relation(name: "downvotes")
 }
 
 model StoredUser {
@@ -71,20 +75,22 @@ model VerificationToken {
 }
 
 model Event {
-    id           String          @id @default(cuid())
-    slug         String          @unique
+    slug         String          @id
     quota19      Int
     quota20      Int
     quota21      Int
     participants Participation[]
+    kesanPesan   KesanPesan[]
 }
 
 model Participation {
     userId    String   @id
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    eventId   String
-    event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+    eventSlug String
+    event     Event    @relation(fields: [eventSlug], references: [slug], onDelete: Cascade)
     createdAt DateTime @default(now())
+
+    @@index([createdAt])
 }
 
 model Milestone {
@@ -98,4 +104,25 @@ model MilestoneVote {
     milestoneId Int
     milestone   Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
     createdAt   DateTime  @default(now())
+}
+
+model KesanPesan {
+    userId         String   @id
+    user           User     @relation(fields: [userId], references: [id], onDelete: Cascade, name: "kesanPesan")
+    eventSlug      String
+    event          Event    @relation(fields: [eventSlug], references: [slug], onDelete: Cascade)
+    createdAt      DateTime @default(now())
+    text           String
+    upvotesCount   Int      @default(0)
+    downvotesCount Int      @default(0)
+    upvotes        User[]   @relation(name: "upvotes")
+    downvotes      User[]   @relation(name: "downvotes")
+
+    @@unique([userId, eventSlug])
+    @@index([createdAt])
+}
+
+model FeatureFlag {
+    name  String  @id
+    value Boolean
 }

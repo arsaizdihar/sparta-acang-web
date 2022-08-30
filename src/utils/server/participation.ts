@@ -11,7 +11,7 @@ export async function getEventsParticipants() {
   > = {};
 
   for (const event of events) {
-    result[event.id] = await getEventParticipants(event);
+    result[event.slug] = await getEventParticipants(event);
   }
 
   return result;
@@ -22,7 +22,7 @@ export async function getEventParticipants(event: Event) {
   const participantCount = await prisma.user.groupBy({
     by: ['classYear'],
     where: {
-      participation: { eventId: event.id },
+      participation: { eventSlug: event.slug },
     },
     _count: true,
   });
@@ -36,15 +36,15 @@ export async function getEventParticipants(event: Event) {
 
   // participants count for each class
   const classCount = {
-    21: event.quota21,
-    20: event.quota20,
-    19: event.quota19,
+    21: 0,
+    20: 0,
+    19: 0,
   };
 
   // count the 'non waiting' participants for each class
   for (const { _count, classYear } of participantCount) {
     // @ts-ignore
-    classCount[classYear] = min(_count, classCount[classYear]);
+    classCount[classYear] = Math.min(_count, event['quota' + classYear]);
   }
 
   const quotaTotal = Object.values(classQuota).reduce((a, b) => a + b, 0);
@@ -71,7 +71,7 @@ export const getUserParticipation = async (
     },
   });
   if (!participation) {
-    return undefined;
+    return {};
   }
   const quota =
     participation.event[
@@ -79,7 +79,7 @@ export const getUserParticipation = async (
     ];
   const userOrder = await prisma.participation.count({
     where: {
-      eventId: participation.event.id,
+      eventSlug: participation.event.slug,
       createdAt: { lte: participation.createdAt },
       user: {
         classYear: user.classYear,
@@ -88,7 +88,7 @@ export const getUserParticipation = async (
   });
 
   return {
-    eventId: participation.event.id,
+    eventSlug: participation.event.slug,
     isWaiting: userOrder > quota,
   };
 };

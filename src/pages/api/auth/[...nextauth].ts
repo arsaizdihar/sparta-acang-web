@@ -56,8 +56,8 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    error: '/'
-  }
+    error: '/',
+  },
 };
 
 export default NextAuth(authOptions);
