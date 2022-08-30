@@ -12,7 +12,7 @@ export const eventProtectedRouter = createProtectedRouter()
     async resolve({ input, ctx }) {
       const enableEventRegister = await getFeatureFlag('EVENT_REGISTER');
 
-      if (enableEventRegister) {
+      if (!enableEventRegister) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'Event registration is not enabled',
@@ -66,6 +66,36 @@ export const eventProtectedRouter = createProtectedRouter()
       return { isWaiting };
     },
   })
+  .mutation('unregister', {
+    input: z.object({
+      slug: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      const enableEventRegister = await getFeatureFlag('EVENT_REGISTER');
+
+      if (!enableEventRegister) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Event registration is not enabled',
+        });
+      }
+      const isParticipated = await ctx.prisma.participation.count({
+        where: { userId: ctx.session.user.id, eventSlug: input.slug },
+      });
+      if (!isParticipated) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'You are not registered to this event',
+        });
+      }
+
+      return await ctx.prisma.participation.delete({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+    },
+  })
   .mutation('addKesanPesan', {
     input: z.object({
       eventSlug: z.string(),
@@ -114,7 +144,7 @@ export const eventProtectedRouter = createProtectedRouter()
       });
     },
   })
-  .query('.getRegistered', {
+  .query('getRegistered', {
     async resolve({ ctx }) {
       return await getUserParticipation(ctx.session.user);
     },
