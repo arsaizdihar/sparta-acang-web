@@ -60,10 +60,16 @@ const MobileMenu = ({ open, closeMenu, session }: MobileMenuProps) => {
             runOnClick={() => signIn('google', { callbackUrl: router.asPath })}
           />
         )}
-        <div className="flex flex-col gap-6 my-7" onClick={closeMenu}>
-          <NavLink href="/">Home</NavLink>
-          {showMilestone && <NavLink href="/sudoex">SudoEx</NavLink>}
-          <NavDropdown>SudoLympic</NavDropdown>
+        <div className="flex flex-col gap-6 my-7">
+          <NavLink href="/" onClick={closeMenu}>
+            Home
+          </NavLink>
+          {showMilestone && (
+            <NavLink href="/sudoex" onClick={closeMenu}>
+              SudoEx
+            </NavLink>
+          )}
+          <NavDropdown closeMenu={closeMenu}>SudoLympic</NavDropdown>
         </div>
         {session && (
           <button

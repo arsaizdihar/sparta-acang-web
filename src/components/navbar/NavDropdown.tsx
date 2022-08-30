@@ -5,18 +5,15 @@ import { useOutsideClick } from '~/utils/useOutsideClick';
 
 type NavDropdownProps = {
   children: ReactNode;
+  closeMenu?: () => void;
 };
 
-const NavDropdown = ({ children }: NavDropdownProps) => {
+const NavDropdown = ({ children, closeMenu }: NavDropdownProps) => {
   const [open, setOpen] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
 
-  function close() {
-    setOpen(false);
-  }
-
-  useOutsideClick(ref, close);
+  useOutsideClick(ref, () => setOpen(false));
 
   return (
     <div className="relative font-sudo-title" ref={ref}>
@@ -29,7 +26,13 @@ const NavDropdown = ({ children }: NavDropdownProps) => {
         {children}
         <MdArrowDropDown className="sudo-dropdown" />
       </button>
-      <NavDropdownMenu open={open} close={close} />
+      <NavDropdownMenu
+        open={open}
+        close={() => {
+          setOpen(false);
+          closeMenu?.();
+        }}
+      />
     </div>
   );
 };
