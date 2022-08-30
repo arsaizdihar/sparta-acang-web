@@ -16,14 +16,18 @@ const HomeCardWithTwoButtons = ({ title, paragraph, text1, text2 }: Props) => {
         <h2 className="text-6xl font-sudo-title text-center">{title}</h2>
         <p className="text-2xl">{paragraph}</p>
         <div className="mx-auto mt-10 flex flex-col lg:flex-row gap-8">
-          <div className="w-[9.6rem]">
+          <div
+            className={`${text1 === 'FUTSAL' ? 'w-[5.5rem]' : 'w-[9.6rem]'}`}
+          >
             <Button
               text={text1}
               runOnClick={() => router.push('/sudolympic/futsal')}
               useArrow
             />
           </div>
-          <div className="w-[9.7rem]">
+          <div
+            className={`${text2 === 'BASKET' ? 'w-[5.6rem]' : 'w-[9.6rem]'}`}
+          >
             <Button
               text={text2}
               runOnClick={() => router.push('/sudolympic/basket')}

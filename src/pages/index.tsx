@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import Image from 'next/image';
-import QR from '~/../public/qr.png';
+import QR_GOPAY from '~/../public/qr_gopay.jpg';
+import QR_OVO from '~/../public/qr_ovo.jpg';
 import AboutSudo from '~/components/AboutSudo';
 import CustomHead from '~/components/CustomHead';
 import HomeCardWithOneButton from '~/components/HomeCardWithOneButton';
@@ -24,12 +25,7 @@ export const getStaticProps = async () => {
   };
 };
 
-interface Props {
-  text1: string;
-  text2: string;
-}
-
-const Home: NextPage<Props> = (props) => {
+const Home: NextPage = () => {
   const { showMilestone } = usePageData<{ showMilestone: boolean }>();
   const { showEventRegister } = usePageData<{ showEventRegister: boolean }>();
 
@@ -87,7 +83,7 @@ const Home: NextPage<Props> = (props) => {
 
         <div>
           {/* NAVIGATION SECTION*/}
-          <div className="flex flex-col mt-10 relative">
+          <div className="flex flex-col mt-10 relative text-sudo-dark-brown">
             <TitleSection title="" />
             <RoundedRectangle position="left" />
             <RoundedRectangle position="right" />
@@ -97,7 +93,7 @@ const Home: NextPage<Props> = (props) => {
                   text="VOTE KARYA"
                   title="Lihat karya-karya SUDO!"
                   paragraph="Pilih karya favoritmu dari karya-karya terbaik SUDO!"
-                  nav="/"
+                  nav="/sudoex"
                 />
               )}
               <HomeCardWithTwoButtons
@@ -110,7 +106,7 @@ const Home: NextPage<Props> = (props) => {
           </div>
 
           {/* DONATION SECTION*/}
-          <div className="flex flex-col pb-40">
+          <div className="flex flex-col pb-40 text-sudo-dark-brown">
             <TitleSection title="" />
             <div className="mt-4 md:mt-32 mb-10 flex flex-col md:flex-row px-4 gap-16 md:gap-4">
               <div className="flex flex-col gap-4 md:w-2/3 mt-24 text-center md:text-left">
@@ -119,18 +115,34 @@ const Home: NextPage<Props> = (props) => {
                 </h2>
                 <p className="font-sudo-body text-2xl">
                   Sisihkan sebagian dari uangmu ke orang-orang yang membutuhkan.
-                  SuDonation akan menggalang dana untuk memberi sembako ke Panti
-                  Asuhan A, Jatinangor.
+                  SuDonation akan menggalang dana untuk memberi donasi ke panti
+                  asuhan Riyadlul Jannah yang bertempat di Jatinangor.
                 </p>
               </div>
-              <div className="w-2/3 md:w-1/3 relative mx-auto md:mx-0">
-                <div className="flex flex-col justify-center gap-4 w-[8rem] mx-auto">
-                  <Image alt="qr" src={QR} />
-                  <p className="text-xl font-sudo-body">
-                    Scan QR code di atas!
-                  </p>
+              <div className="flex flex-col w-2/3 gap-4 mx-auto">
+                <p className="font-sudo-body text-2xl text-center">
+                  Scan QR Code di bawah ini!
+                </p>
+                <div className="flex w-full gap-8 md:flex-row flex-col mx-auto">
+                  <div className="flex-1 md:w-1/3 relative mx-auto md:mx-0 w-full">
+                    <div className="flex flex-col justify-center gap-4 w-[8rem] mx-auto">
+                      <Image alt="qr" src={QR_GOPAY} />
+                      <p className="text-xl font-sudo-body mx-auto font-bold">
+                        Gopay
+                      </p>
+                    </div>
+                    <div className="z-[-1] w-full h-[234px] absolute linear-gradient-card-3 right-0 top-[5rem] rounded-tl-[150px] rounded-br-[150px]"></div>
+                  </div>
+                  <div className="flex-1 md:w-1/3 relative mx-auto md:mx-0 md:mt-0 mt-40 w-full">
+                    <div className="flex flex-col justify-center gap-4 w-[8rem] mx-auto">
+                      <Image alt="qr" src={QR_OVO} />
+                      <p className="text-xl font-sudo-body mx-auto font-bold">
+                        OVO
+                      </p>
+                    </div>
+                    <div className="z-[-1] w-full h-[234px] absolute linear-gradient-card-3 right-0 top-[5rem] rounded-tl-[150px] rounded-br-[150px]"></div>
+                  </div>
                 </div>
-                <div className="z-[-1] w-full h-[234px] absolute linear-gradient-card-3 right-0 top-[5rem] rounded-tl-[150px] rounded-br-[150px]"></div>
               </div>
             </div>
           </div>
