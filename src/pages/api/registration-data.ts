@@ -13,6 +13,7 @@ const handler: NextApiHandler = async (req, res) => {
     res.status(404).json({ msg: 'Event not found' });
     return;
   }
+
   const apiKey = req.headers.authorization;
   if (!process.env.API_KEY || apiKey !== process.env.API_KEY) {
     const session = await unstable_getServerSession(req, res, nextAuthOptions);
