@@ -180,8 +180,8 @@ export const eventProtectedRouter = createProtectedRouter()
         await ctx.prisma.kesanPesan.update({
           where: { userId: input.userId },
           data: {
-            upvotes: { delete: { id: user.id } },
-            upvotesCount: { decrement: 1 },
+            upvotes: { disconnect: { id: user.id } },
+            votesCount: { decrement: 1 },
           },
         });
 
@@ -192,9 +192,8 @@ export const eventProtectedRouter = createProtectedRouter()
         where: { userId: input.userId },
         data: {
           upvotes: { connect: { id: user.id } },
-          upvotesCount: { increment: 1 },
-          downvotes: isDownvoted ? { delete: { id: user.id } } : undefined,
-          downvotesCount: isDownvoted ? { decrement: 1 } : undefined,
+          votesCount: { increment: isDownvoted ? 2 : 1 },
+          downvotes: isDownvoted ? { disconnect: { id: user.id } } : undefined,
         },
       });
 
@@ -232,8 +231,8 @@ export const eventProtectedRouter = createProtectedRouter()
         await ctx.prisma.kesanPesan.update({
           where: { userId: input.userId },
           data: {
-            downvotes: { delete: { id: user.id } },
-            downvotesCount: { decrement: 1 },
+            downvotes: { disconnect: { id: user.id } },
+            votesCount: { increment: 1 },
           },
         });
 
@@ -244,9 +243,8 @@ export const eventProtectedRouter = createProtectedRouter()
         where: { userId: input.userId },
         data: {
           downvotes: { connect: { id: user.id } },
-          downvotesCount: { increment: 1 },
-          upvotes: isUpvoted ? { delete: { id: user.id } } : undefined,
-          upvotesCount: isUpvoted ? { decrement: 1 } : undefined,
+          votesCount: { decrement: isUpvoted ? 2 : 1 },
+          upvotes: isUpvoted ? { disconnect: { id: user.id } } : undefined,
         },
       });
 

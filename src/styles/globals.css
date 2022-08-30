@@ -38,3 +38,7 @@
     rgba(201, 151, 82, 0) 100%
   );
 }
+
+.prasyarat ul {
+  @apply list-disc pl-5;
+}
