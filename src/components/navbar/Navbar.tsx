@@ -31,34 +31,36 @@ const Navbar = () => {
         open={menuOpen}
         closeMenu={() => setMenuOpen(false)}
       />
-      <div className="flex w-full sticky top-0 items-center h-12 px-[10px] bg-sudo-grad1">
-        <div className="flex-1 md:hidden">
-          <MdMenu
-            size={38}
-            className="text-sudo-tan"
-            onClick={() => setMenuOpen(true)}
-          />
-        </div>
-        <Image
-          className="self-center"
-          layout="fixed"
-          width={35}
-          height={35}
-          src="/images/logo.jpg"
-          alt="logo"
-        />
-        <div className="hidden md:flex flex-1 h-full justify-end items-center tracking-wider gap-5">
-          <NavLink href="/">Home</NavLink>
-          <NavLink href="/">SudoEx</NavLink>
-          <NavDropdown>SudoLympic</NavDropdown>
-          <NavLink href="/">SuDonation</NavLink>
-          {session ? (
-            <ProfileDropdown session={session} signOut={signOut} />
-          ) : (
-            <LoginButton
-              runOnClick={() => signIn('google', { callbackUrl: '/' })}
+      <div className="flex w-full sticky z-[1] top-0 h-12  bg-sudo-grad1">
+        <div className="flex items-center w-full max-w-5xl mx-auto h-full px-[10px]">
+          <div className="flex-1 md:hidden">
+            <MdMenu
+              size={38}
+              className="text-sudo-tan"
+              onClick={() => setMenuOpen(true)}
             />
-          )}
+          </div>
+          <Image
+            className="self-center"
+            layout="fixed"
+            width={35}
+            height={35}
+            src="/images/logo.jpg"
+            alt="logo"
+          />
+          <div className="hidden md:flex flex-1 h-full justify-end items-center tracking-wider gap-5">
+            <NavLink href="/">Home</NavLink>
+            <NavLink href="/">SudoEx</NavLink>
+            <NavDropdown>SudoLympic</NavDropdown>
+            <NavLink href="/">SuDonation</NavLink>
+            {session ? (
+              <ProfileDropdown session={session} signOut={signOut} />
+            ) : (
+              <LoginButton
+                runOnClick={() => signIn('google', { callbackUrl: '/' })}
+              />
+            )}
+          </div>
         </div>
       </div>
       <Toaster
