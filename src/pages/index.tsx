@@ -1,4 +1,4 @@
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 import Image from 'next/image';
 import QR_GOPAY from '~/../public/qr_gopay.jpg';
 import QR_OVO from '~/../public/qr_ovo.jpg';
