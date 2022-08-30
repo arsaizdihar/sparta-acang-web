@@ -50,8 +50,10 @@ model User {
     classYear      Int
     milestoneGroup Int?
     milestoneVote  MilestoneVote?
-    kesanPesan     KesanPesan?
+    kesanPesan     KesanPesan?    @relation(name: "kesanPesan")
     isAdmin        Boolean        @default(false)
+    upvotes        KesanPesan[]   @relation(name: "upvotes")
+    downvotes      KesanPesan[]   @relation(name: "downvotes")
 }
 
 model StoredUser {
@@ -105,12 +107,16 @@ model MilestoneVote {
 }
 
 model KesanPesan {
-    userId    String   @id
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    eventSlug String
-    event     Event    @relation(fields: [eventSlug], references: [slug], onDelete: Cascade)
-    createdAt DateTime @default(now())
-    text      String
+    userId         String   @id
+    user           User     @relation(fields: [userId], references: [id], onDelete: Cascade, name: "kesanPesan")
+    eventSlug      String
+    event          Event    @relation(fields: [eventSlug], references: [slug], onDelete: Cascade)
+    createdAt      DateTime @default(now())
+    text           String
+    upvotesCount   Int      @default(0)
+    downvotesCount Int      @default(0)
+    upvotes        User[]   @relation(name: "upvotes")
+    downvotes      User[]   @relation(name: "downvotes")
 
     @@unique([userId, eventSlug])
     @@index([createdAt])
