@@ -64,7 +64,9 @@ const Navbar = () => {
               <ProfileDropdown session={session} signOut={signOut} />
             ) : (
               <LoginButton
-                runOnClick={() => signIn('google', { callbackUrl: '/' })}
+                runOnClick={() =>
+                  signIn('google', { callbackUrl: router.asPath })
+                }
               />
             )}
           </div>
