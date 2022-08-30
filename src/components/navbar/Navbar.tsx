@@ -58,7 +58,7 @@ const Navbar = () => {
           </div>
           <div className="hidden md:flex flex-1 h-full justify-end items-center tracking-wider gap-5">
             <NavLink href="/">Home</NavLink>
-            <NavLink href="/sudoex">SudoEx</NavLink>
+            {showMilestone && <NavLink href="/sudoex">SudoEx</NavLink>}
             <NavDropdown>SudoLympic</NavDropdown>
             {session ? (
               <ProfileDropdown session={session} signOut={signOut} />
