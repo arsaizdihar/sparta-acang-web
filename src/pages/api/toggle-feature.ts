@@ -42,10 +42,20 @@ const handler: NextApiHandler = async (req, res) => {
 
     switch (name) {
       case 'MILESTONE_SHOW':
-        listUnvalidate = ['/', '/sudoex'];
+        listUnvalidate = [
+          '/',
+          '/sudoex',
+          '/sudolympic/basket',
+          '/sudolympic/futsal',
+        ];
         break;
       case 'EVENT_REGISTER':
-        listUnvalidate = ['/'];
+        listUnvalidate = ['/', '/sudolympic/basket', '/sudolympic/futsal'];
+        break;
+      case 'EVENT_KESAN':
+        listUnvalidate = ['/sudolympic/basket', '/sudolympic/futsal'];
+      case 'MILESTONE_VOTE':
+        listUnvalidate = ['/sudoex'];
       default:
         break;
     }

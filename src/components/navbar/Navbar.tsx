@@ -34,7 +34,7 @@ const Navbar = () => {
         open={menuOpen}
         closeMenu={() => setMenuOpen(false)}
       />
-      <div className="flex w-full sticky z-10 top-0 h-12  bg-sudo-grad1">
+      <div className="flex w-full sticky z-10 top-0 h-12  bg-sudo-grad-navbar">
         <div className="flex items-center w-full max-w-7xl mx-auto h-full px-[10px]">
           <div className="flex-1 md:hidden">
             <MdMenu
@@ -58,13 +58,15 @@ const Navbar = () => {
           </div>
           <div className="hidden md:flex flex-1 h-full justify-end items-center tracking-wider gap-5">
             <NavLink href="/">Home</NavLink>
-            <NavLink href="/sudoex">SudoEx</NavLink>
+            {showMilestone && <NavLink href="/sudoex">SudoEx</NavLink>}
             <NavDropdown>SudoLympic</NavDropdown>
             {session ? (
               <ProfileDropdown session={session} signOut={signOut} />
             ) : (
               <LoginButton
-                runOnClick={() => signIn('google', { callbackUrl: '/' })}
+                runOnClick={() =>
+                  signIn('google', { callbackUrl: router.asPath })
+                }
               />
             )}
           </div>

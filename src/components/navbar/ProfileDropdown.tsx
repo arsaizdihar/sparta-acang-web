@@ -1,7 +1,8 @@
 import { Session } from 'next-auth';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { MdExpandMore } from 'react-icons/md';
+import { useOutsideClick } from '~/utils/useOutsideClick';
 
 type Props = {
   signOut: () => void;
@@ -11,22 +12,13 @@ type Props = {
 const ProfileDropdown = ({ signOut, session }: Props) => {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   const name = session ? session.user?.name?.split(' ')[1] : '';
-
-  useEffect(() => {
-    const handleClickOutside = (e: any) => {
-      if (!e.target.classList.contains('sudo-dropdown')) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  useOutsideClick(ref, () => setOpen(false));
 
   return (
-    <div className="relative font-sudo-title">
+    <div className="relative font-sudo-title" ref={ref}>
       <button
         ref={buttonRef}
         onClick={() => {
@@ -37,7 +29,7 @@ const ProfileDropdown = ({ signOut, session }: Props) => {
         <Image
           width={24}
           height={24}
-          src="/images/logo.jpg"
+          src={session.user?.image ?? '/images/logo.jpg'}
           className="rounded-full sudo-dropdown"
           alt="profile picture"
         />

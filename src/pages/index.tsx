@@ -1,5 +1,8 @@
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import type { NextPage } from 'next';
 import Image from 'next/image';
+import { useEffect } from 'react';
 import QR_GOPAY from '~/../public/qr_gopay.jpg';
 import QR_OVO from '~/../public/qr_ovo.jpg';
 import AboutSudo from '~/components/AboutSudo';
@@ -26,6 +29,16 @@ export const getStaticProps = async () => {
 };
 
 const Home: NextPage = () => {
+  useEffect(() => {
+    AOS.init({
+      once: true,
+      disable: () => {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      },
+      duration: 1200,
+    });
+  }, []);
+
   const { showMilestone } = usePageData<{ showMilestone: boolean }>();
   const { showEventRegister } = usePageData<{ showEventRegister: boolean }>();
 
@@ -63,7 +76,10 @@ const Home: NextPage = () => {
           {/* SUDOVERSE SECTION*/}
           <div className="flex flex-col">
             <TitleSection title={Data.sudoverse.title} />
-            <div className="flex flex-col md:flex-row gap-4 mt-10">
+            <div
+              className="flex flex-col md:flex-row gap-4 mt-10"
+              data-aos="fade-up"
+            >
               {Data.about.content.map((item, idx) => (
                 <HomeCardWithoutButton
                   key={idx}
@@ -109,7 +125,10 @@ const Home: NextPage = () => {
           <div className="flex flex-col pb-40 text-sudo-dark-brown">
             <TitleSection title="" />
             <div className="mt-4 md:mt-32 mb-10 flex flex-col md:flex-row px-4 gap-16 md:gap-4">
-              <div className="flex flex-col gap-4 md:w-2/3 mt-24 text-center md:text-left">
+              <div
+                className="flex flex-col gap-4 md:w-2/3 mt-24 text-center md:text-left"
+                data-aos="fade-up"
+              >
                 <h2 className="text-6xl font-sudo-title">
                   BERBAGILAH KEBAHAGIAAN!
                 </h2>
@@ -120,11 +139,17 @@ const Home: NextPage = () => {
                 </p>
               </div>
               <div className="flex flex-col w-2/3 gap-4 mx-auto">
-                <p className="font-sudo-body text-2xl text-center">
+                <p
+                  className="font-sudo-body text-2xl text-center"
+                  data-aos="fade-up"
+                >
                   Scan QR Code di bawah ini!
                 </p>
                 <div className="flex w-full gap-8 md:flex-row flex-col mx-auto">
-                  <div className="flex-1 md:w-1/3 relative mx-auto md:mx-0 w-full">
+                  <div
+                    className="flex-1 md:w-1/3 relative mx-auto md:mx-0 w-full"
+                    data-aos="fade-up"
+                  >
                     <div className="flex flex-col justify-center gap-4 w-[8rem] mx-auto">
                       <Image alt="qr" src={QR_GOPAY} />
                       <p className="text-xl font-sudo-body mx-auto font-bold">
@@ -133,7 +158,10 @@ const Home: NextPage = () => {
                     </div>
                     <div className="z-[-1] w-full h-[234px] absolute linear-gradient-card-3 right-0 top-[5rem] rounded-tl-[150px] rounded-br-[150px]"></div>
                   </div>
-                  <div className="flex-1 md:w-1/3 relative mx-auto md:mx-0 md:mt-0 mt-40 w-full">
+                  <div
+                    className="flex-1 md:w-1/3 relative mx-auto md:mx-0 md:mt-0 mt-40 w-full"
+                    data-aos="fade-up"
+                  >
                     <div className="flex flex-col justify-center gap-4 w-[8rem] mx-auto">
                       <Image alt="qr" src={QR_OVO} />
                       <p className="text-xl font-sudo-body mx-auto font-bold">

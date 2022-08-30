@@ -12,7 +12,10 @@ const HomeCardWithTwoButtons = ({ title, paragraph, text1, text2 }: Props) => {
   const router = useRouter();
   return (
     <>
-      <div className="px-6 py-20 linear-gradient-card-2 flex flex-col gap-4 rounded-xl md:w-[40%] text-center">
+      <div
+        className="px-6 py-20 linear-gradient-card-2 flex flex-col gap-4 rounded-xl md:w-[40%] text-center"
+        data-aos="fade-up"
+      >
         <h2 className="text-6xl font-sudo-title text-center">{title}</h2>
         <p className="text-2xl">{paragraph}</p>
         <div className="mx-auto mt-10 flex flex-col lg:flex-row gap-8">

@@ -59,7 +59,7 @@ const KesanVote: React.FC<Props> = (k) => {
           k.isUpvoted ? 'text-[#00A446]' : k.isDownvoted ? 'text-[#DD3916]' : ''
         }`}
       >
-        {k.upvotesCount - k.downvotesCount}
+        {k.votesCount}
       </p>
       <button
         className={`relative bottom-4 md:bottom-9 ${

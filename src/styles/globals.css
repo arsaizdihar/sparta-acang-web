@@ -13,6 +13,9 @@
     font-family: 'Book Antiqua';
     src: url('/fonts/book-antiqua.ttf') format('ttf');
   }
+  body {
+    @apply overflow-x-hidden;
+  }
 }
 
 .linear-gradient-card-1 {
@@ -37,4 +40,8 @@
     #c99752 33.06%,
     rgba(201, 151, 82, 0) 100%
   );
+}
+
+.prasyarat ul {
+  @apply list-disc pl-5;
 }

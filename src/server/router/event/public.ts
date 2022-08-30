@@ -42,8 +42,7 @@ export const eventPublicRouter = createRouter()
             userId: true,
             text: true,
             user: { select: { name: true, image: true } },
-            upvotesCount: true,
-            downvotesCount: true,
+            votesCount: true,
             upvotes: ctx.session?.user
               ? {
                   where: { id: ctx.session.user.id },

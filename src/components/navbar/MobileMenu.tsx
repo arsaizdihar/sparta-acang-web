@@ -1,19 +1,28 @@
 import { Session } from 'next-auth';
 import { signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useRef } from 'react';
 import { MdClose } from 'react-icons/md';
+import { useOutsideClick } from '~/utils/useOutsideClick';
+import { usePageData } from '../PageDataProvider';
 import LoginButton from './LoginButton';
 import NavDropdown from './NavDropdown';
 import NavLink from './NavLink';
 
 type MobileMenuProps = {
   open: boolean;
-  closeMenu: Function;
+  closeMenu: () => void;
   session: Session | null;
 };
 
 const MobileMenu = ({ open, closeMenu, session }: MobileMenuProps) => {
   const name = session ? session.user?.name?.split(' ')[1] : '';
+  const { showMilestone } = usePageData();
+  const ref = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  useOutsideClick(ref, closeMenu);
 
   return (
     <div className="md:hidden text-sudo-dark-tan font-sudo-title text-xl tracking-wider">
@@ -25,6 +34,7 @@ const MobileMenu = ({ open, closeMenu, session }: MobileMenuProps) => {
         className="fixed top-0 left-0 opacity-0 bg-black w-screen h-screen transition transform ease-in-out duration-700"
       ></div>
       <div
+        ref={ref}
         style={{ transform: open ? 'translateX(260px)' : 'none' }}
         className="fixed z-20 w-[260px] h-screen bg-sudo-dark-brown py-[100px] px-8 left-[-260px] transition ease-in-out duration-700 transform"
       >
@@ -39,7 +49,7 @@ const MobileMenu = ({ open, closeMenu, session }: MobileMenuProps) => {
             <Image
               width={64}
               height={64}
-              src="/images/logo.jpg"
+              src={session.user?.image ?? '/images/logo.jpg'}
               alt=""
               className="rounded-full"
             />
@@ -47,13 +57,19 @@ const MobileMenu = ({ open, closeMenu, session }: MobileMenuProps) => {
           </div>
         ) : (
           <LoginButton
-            runOnClick={() => signIn('google', { callbackUrl: '/' })}
+            runOnClick={() => signIn('google', { callbackUrl: router.asPath })}
           />
         )}
         <div className="flex flex-col gap-6 my-7">
-          <NavLink href="/">Home</NavLink>
-          <NavLink href="/sudoex">SudoEx</NavLink>
-          <NavDropdown>SudoLympic</NavDropdown>
+          <NavLink href="/" onClick={closeMenu}>
+            Home
+          </NavLink>
+          {showMilestone && (
+            <NavLink href="/sudoex" onClick={closeMenu}>
+              SudoEx
+            </NavLink>
+          )}
+          <NavDropdown closeMenu={closeMenu}>SudoLympic</NavDropdown>
         </div>
         {session && (
           <button
