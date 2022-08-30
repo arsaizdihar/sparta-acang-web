@@ -127,7 +127,7 @@ const Home: NextPage = () => {
             <div className="mt-4 md:mt-32 mb-10 flex flex-col md:flex-row px-4 gap-16 md:gap-4">
               <div
                 className="flex flex-col gap-4 md:w-2/3 mt-24 text-center md:text-left"
-                data-aos="fade-right"
+                data-aos="fade-up"
               >
                 <h2 className="text-6xl font-sudo-title">
                   BERBAGILAH KEBAHAGIAAN!
