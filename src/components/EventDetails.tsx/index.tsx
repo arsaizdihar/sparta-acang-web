@@ -1,6 +1,8 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
 import { EventPageData } from '~/types/cms';
+import { getHourMinuteString, getWibTime } from '~/utils/time';
 import { trpc } from '~/utils/trpc';
 import Button from '../Button';
 import { usePageData } from '../PageDataProvider';
@@ -16,6 +18,8 @@ export default function EventDetails(props: EventDetailsProps) {
   const registerQuery = trpc.useQuery(['event.getRegistered'], {
     enabled: !!session.data?.user && showEventRegister,
   });
+  const startTime = getWibTime(data.waktuMulai);
+  const endTime = getWibTime(data.waktuSelesai);
 
   const eventQuery = trpc.useQuery([
     'event.getParticipants',
@@ -37,11 +41,7 @@ export default function EventDetails(props: EventDetailsProps) {
       <div>
         <div className="font-montserrat text-sudo-dark-brown mb-3">
           <h2 className="text-2xl lg:text-3xl font-bold mb-1">Prasyarat</h2>
-          <ul className="list-disc pl-5">
-            {/* {preconditions.map((precondition) => (
-              <li key={precondition}>{precondition}</li>
-            ))} */}
-          </ul>
+          <ReactMarkdown className="prasyarat">{data.prasayarat}</ReactMarkdown>
         </div>
         <div className="font-montserrat text-sudo-dark-brown mb-3">
           <h2 className="text-2xl lg:text-3xl font-bold mb-1">
@@ -54,7 +54,10 @@ export default function EventDetails(props: EventDetailsProps) {
             </li>
             <li>
               <span className="font-bold">Waktu: </span>
-              <>WIB</>
+              <>
+                {getHourMinuteString(startTime)} -{' '}
+                {getHourMinuteString(endTime)} WIB
+              </>
             </li>
           </ul>
         </div>
