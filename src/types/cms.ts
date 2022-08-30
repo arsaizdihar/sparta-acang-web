@@ -24,8 +24,9 @@ export interface EventPageData {
     waktuMulai: string;
     waktuSelesai: string;
     thumbnail: { data: StrapiImage };
-    dokumentasi: StrapiImage[];
+    dokumentasi: { data: StrapiImage[] };
   };
   showMilestone: boolean;
   showEventRegister: boolean;
+  showKesan: boolean;
 }

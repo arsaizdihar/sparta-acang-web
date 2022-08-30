@@ -104,7 +104,7 @@ const EventPage = () => {
         <Title text="Dokumentasi" />
         <Documentation />
         <Title text="Kesan & Pesan" />
-        <KesanPesan />
+        {data.showKesan && <KesanPesan />}
       </main>
     </>
   );

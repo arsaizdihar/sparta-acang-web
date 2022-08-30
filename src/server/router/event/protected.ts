@@ -148,4 +148,108 @@ export const eventProtectedRouter = createProtectedRouter()
     async resolve({ ctx }) {
       return await getUserParticipation(ctx.session.user);
     },
+  })
+  .mutation('upvoteKesan', {
+    input: z.object({
+      userId: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      const user = ctx.session.user;
+
+      const kesan = await ctx.prisma.kesanPesan.findUnique({
+        where: { userId: input.userId },
+      });
+
+      if (!kesan) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Kesan not found',
+        });
+      }
+
+      const [isUpvoted, isDownvoted] = await Promise.all([
+        ctx.prisma.user.count({
+          where: { id: user.id, upvotes: { some: { userId: input.userId } } },
+        }),
+        ctx.prisma.user.count({
+          where: { id: user.id, downvotes: { some: { userId: input.userId } } },
+        }),
+      ]);
+
+      if (isUpvoted) {
+        await ctx.prisma.kesanPesan.update({
+          where: { userId: input.userId },
+          data: {
+            upvotes: { delete: { id: user.id } },
+            upvotesCount: { decrement: 1 },
+          },
+        });
+
+        return { isUpvoted: false };
+      }
+
+      await ctx.prisma.kesanPesan.update({
+        where: { userId: input.userId },
+        data: {
+          upvotes: { connect: { id: user.id } },
+          upvotesCount: { increment: 1 },
+          downvotes: isDownvoted ? { delete: { id: user.id } } : undefined,
+          downvotesCount: isDownvoted ? { decrement: 1 } : undefined,
+        },
+      });
+
+      return { isUpvoted: true };
+    },
+  })
+  .mutation('downvoteKesan', {
+    input: z.object({
+      userId: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      const user = ctx.session.user;
+
+      const kesan = await ctx.prisma.kesanPesan.findUnique({
+        where: { userId: input.userId },
+      });
+
+      if (!kesan) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Kesan not found',
+        });
+      }
+
+      const [isUpvoted, isDownvoted] = await Promise.all([
+        ctx.prisma.user.count({
+          where: { id: user.id, upvotes: { some: { userId: input.userId } } },
+        }),
+        ctx.prisma.user.count({
+          where: { id: user.id, downvotes: { some: { userId: input.userId } } },
+        }),
+      ]);
+
+      if (isDownvoted) {
+        await ctx.prisma.kesanPesan.update({
+          where: { userId: input.userId },
+          data: {
+            downvotes: { delete: { id: user.id } },
+            downvotesCount: { decrement: 1 },
+          },
+        });
+
+        return { isDownvoted: false };
+      }
+
+      await ctx.prisma.kesanPesan.update({
+        where: { userId: input.userId },
+        data: {
+          downvotes: { connect: { id: user.id } },
+          downvotesCount: { increment: 1 },
+          upvotes: isUpvoted ? { delete: { id: user.id } } : undefined,
+          upvotesCount: isUpvoted ? { decrement: 1 } : undefined,
+        },
+      });
+
+      return { isDownvoted: true };
+    },
   });

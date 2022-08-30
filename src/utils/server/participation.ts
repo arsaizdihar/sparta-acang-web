@@ -43,7 +43,6 @@ export async function getEventParticipants(event: Event) {
 
   // count the 'non waiting' participants for each class
   for (const { _count, classYear } of participantCount) {
-    console.log(_count);
     // @ts-ignore
     classCount[classYear] = Math.min(_count, event['quota' + classYear]);
   }

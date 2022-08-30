@@ -6,9 +6,10 @@ import { request } from './requestCMS';
 export async function getEventStaticProps(
   slug: string,
 ): Promise<GetStaticPropsResult<any>> {
-  const [showMilestone, showEventRegister] = await Promise.all([
+  const [showMilestone, showEventRegister, showKesan] = await Promise.all([
     getFeatureFlag('MILESTONE_SHOW'),
     getFeatureFlag('EVENT_REGISTER'),
+    getFeatureFlag('EVENT_KESAN'),
   ]);
 
   const result = await request({
@@ -59,6 +60,7 @@ export async function getEventStaticProps(
       data: {
         showMilestone,
         showEventRegister,
+        showKesan,
         event: result.events.data[0].attributes,
       },
     },
