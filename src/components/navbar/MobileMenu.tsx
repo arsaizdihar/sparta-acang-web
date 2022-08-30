@@ -52,9 +52,8 @@ const MobileMenu = ({ open, closeMenu, session }: MobileMenuProps) => {
         )}
         <div className="flex flex-col gap-6 my-7">
           <NavLink href="/">Home</NavLink>
-          <NavLink href="/">SudoEx</NavLink>
+          <NavLink href="/sudoex">SudoEx</NavLink>
           <NavDropdown>SudoLympic</NavDropdown>
-          <NavLink href="/">SuDonation</NavLink>
         </div>
         {session && (
           <button
