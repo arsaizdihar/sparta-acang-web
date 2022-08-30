@@ -116,8 +116,8 @@ const Home: NextPage = () => {
                 </h2>
                 <p className="font-sudo-body text-2xl">
                   Sisihkan sebagian dari uangmu ke orang-orang yang membutuhkan.
-                  SuDonation akan menggalang dana untuk memberi sembako ke Panti
-                  Asuhan A, Jatinangor.
+                  SuDonation akan menggalang dana untuk memberi donasi ke panti
+                  asuhan Riyadlul Jannah yang bertempat di Jatinangor.
                 </p>
               </div>
               <div className="flex flex-col w-2/3 gap-4 mx-auto">
