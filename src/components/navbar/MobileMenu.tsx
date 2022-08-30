@@ -2,6 +2,7 @@ import { Session } from 'next-auth';
 import { signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { MdClose } from 'react-icons/md';
+import { usePageData } from '../PageDataProvider';
 import LoginButton from './LoginButton';
 import NavDropdown from './NavDropdown';
 import NavLink from './NavLink';
@@ -14,6 +15,7 @@ type MobileMenuProps = {
 
 const MobileMenu = ({ open, closeMenu, session }: MobileMenuProps) => {
   const name = session ? session.user?.name?.split(' ')[1] : '';
+  const { showMilestone } = usePageData();
 
   return (
     <div className="md:hidden text-sudo-dark-tan font-sudo-title text-xl tracking-wider">
@@ -52,7 +54,7 @@ const MobileMenu = ({ open, closeMenu, session }: MobileMenuProps) => {
         )}
         <div className="flex flex-col gap-6 my-7">
           <NavLink href="/">Home</NavLink>
-          <NavLink href="/sudoex">SudoEx</NavLink>
+          {showMilestone && <NavLink href="/sudoex">SudoEx</NavLink>}
           <NavDropdown>SudoLympic</NavDropdown>
         </div>
         {session && (
