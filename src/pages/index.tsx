@@ -105,7 +105,6 @@ const Home: NextPage<Props> = (props) => {
                 text2={showEventRegister ? 'DAFTAR BASKET' : 'BASKET'}
                 title="Ikuti Fun Sports!"
                 paragraph="Jangan sampai ketinggalan keseruan rangkaian acara Fun Sports dari SUDOVerse."
-                nav="/"
               />
             </div>
           </div>
