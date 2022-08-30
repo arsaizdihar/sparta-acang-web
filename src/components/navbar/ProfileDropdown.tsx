@@ -29,7 +29,7 @@ const ProfileDropdown = ({ signOut, session }: Props) => {
         <Image
           width={24}
           height={24}
-          src="/images/logo.jpg"
+          src={session.user?.image ?? '/images/logo.jpg'}
           className="rounded-full sudo-dropdown"
           alt="profile picture"
         />

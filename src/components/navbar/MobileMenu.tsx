@@ -49,7 +49,7 @@ const MobileMenu = ({ open, closeMenu, session }: MobileMenuProps) => {
             <Image
               width={64}
               height={64}
-              src="/images/logo.jpg"
+              src={session.user?.image ?? '/images/logo.jpg'}
               alt=""
               className="rounded-full"
             />
