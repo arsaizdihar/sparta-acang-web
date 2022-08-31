@@ -27,7 +27,7 @@ export default function EventDetails(props: EventDetailsProps) {
   ]);
 
   return (
-    <div className="w-11/12 max-w-4xl h-fit mx-auto md:flex md:flex-row-reverse md:justify-between md:items-top md:gap-3">
+    <div className="w-11/12 max-w-5xl h-fit mx-auto md:flex md:flex-row-reverse md:justify-between md:items-top md:gap-3">
       <div className="w-full md:w-7/12 h-fit mb-5">
         <Image
           src={data.thumbnail.data.attributes.url}
@@ -40,14 +40,18 @@ export default function EventDetails(props: EventDetailsProps) {
       </div>
       <div>
         <div className="font-montserrat text-sudo-dark-brown mb-3">
-          <h2 className="text-2xl lg:text-3xl font-bold mb-1">Prasyarat</h2>
-          <ReactMarkdown className="prasyarat">{data.prasayarat}</ReactMarkdown>
+          <h2 className="text-2xl lg:text-5xl font-bold mb-1 font-sudo-title">
+            Prasyarat
+          </h2>
+          <ReactMarkdown className="prasyarat font-sudo-body text-base lg:text-2xl">
+            {data.prasayarat}
+          </ReactMarkdown>
         </div>
         <div className="font-montserrat text-sudo-dark-brown mb-3">
-          <h2 className="text-2xl lg:text-3xl font-bold mb-1">
+          <h2 className="text-2xl lg:text-5xl font-bold mb-1 font-sudo-title">
             Tempat & Waktu
           </h2>
-          <ul className="list-disc pl-5">
+          <ul className="list-disc pl-5 font-sudo-body text-base lg:text-2xl">
             <li>
               <span className="font-bold">Lokasi: </span>
               <>{data.lokasi}</>
@@ -63,7 +67,7 @@ export default function EventDetails(props: EventDetailsProps) {
         </div>
         <div className="flex justify-between items-center">
           {eventQuery.data && (
-            <p className="uppercase font-sudo-title text-2xl lg:text-3xl text-sudo-dark-brown">
+            <p className="uppercase font-sudo-title text-2xl lg:text-4xl text-sudo-dark-brown">
               Kuota terisi: {eventQuery.data.registered}/{eventQuery.data.total}
             </p>
           )}

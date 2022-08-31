@@ -17,7 +17,7 @@ const HomeCardWithTwoButtons = ({ title, paragraph, text1, text2 }: Props) => {
         data-aos="fade-up"
       >
         <h2 className="text-6xl font-sudo-title text-center">{title}</h2>
-        <p className="text-2xl">{paragraph}</p>
+        <p className="text-2xl font-sudo-body">{paragraph}</p>
         <div className="mx-auto mt-10 flex flex-col lg:flex-row gap-8">
           <div
             className={`${text1 === 'FUTSAL' ? 'w-[5.5rem]' : 'w-[9.6rem]'}`}
