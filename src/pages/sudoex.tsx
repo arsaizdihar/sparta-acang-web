@@ -19,8 +19,6 @@ import { request } from '~/utils/server/requestCMS';
 import { trpc } from '~/utils/trpc';
 
 export const getStaticProps: GetStaticProps = async () => {
-  const showMilestone = await getFeatureFlag('MILESTONE_SHOW');
-
   const query = gql`
     query {
       milestones(sort: "group", pagination: { limit: 23 }) {
@@ -43,21 +41,32 @@ export const getStaticProps: GetStaticProps = async () => {
       }
     }
   `;
-
-  const result = await request<{ milestones: { data: MilestoneData[] } }>({
-    query,
-  });
+  const [showMilestone, enableVote, result] = await Promise.all([
+    getFeatureFlag('MILESTONE_SHOW'),
+    getFeatureFlag('MILESTONE_VOTE'),
+    request<{ milestones: { data: MilestoneData[] } }>({
+      query,
+    }),
+  ]);
 
   return {
     props: {
-      data: { allMilestone: result.milestones.data, showMilestone },
+      data: { allMilestone: result.milestones.data, showMilestone, enableVote },
     },
     revalidate: 60,
   };
 };
 
 const SudoEx = () => {
-  const { allMilestone } = usePageData<{ allMilestone: MilestoneData[] }>();
+  const {
+    allMilestone,
+    enableVote,
+    showMilestone: showPage,
+  } = usePageData<{
+    allMilestone: MilestoneData[];
+    enableVote: boolean;
+    showMilestone: boolean;
+  }>();
   const [shownMilestone, setShownMilestone] = useState(allMilestone);
   const [processingSomething, setProcessingSomething] = useState(false);
   const searchOptions = {
@@ -83,8 +92,18 @@ const SudoEx = () => {
   const { data: session, status: sessionStatus } = useSession();
   const { data: voteData, isLoading: voteDataLoading } = trpc.useQuery(
     ['milestone.getVote'],
-    { enabled: !!session?.user },
+    { enabled: !!session?.user && enableVote },
   );
+
+  if (!showPage) {
+    return (
+      <div>
+        <h2 className="font-sudo-title text-7xl text-center mt-24 px-4">
+          Page ini belum aktif.
+        </h2>
+      </div>
+    );
+  }
 
   async function handleVote(group: number) {
     const loadingToast = toast.loading(`Sedang vote untuk kelompok ${group}`);
@@ -179,7 +198,7 @@ const SudoEx = () => {
             setShownMilestone(allMilestone);
           }}
         />
-        {sessionStatus === 'unauthenticated' ? (
+        {sessionStatus === 'unauthenticated' && enableVote ? (
           <h3 className="font-sudo-title text-xl text-sudo-dark-brown">
             You cannot vote because you are not logged in
           </h3>
@@ -199,9 +218,9 @@ const SudoEx = () => {
                   nthGroup={group}
                   appName={appName}
                   showButton={
-                    sessionStatus === 'authenticated' && !voteDataLoading
-                      ? true
-                      : false
+                    enableVote &&
+                    sessionStatus === 'authenticated' &&
+                    !voteDataLoading
                   }
                   buttonType={processingSomething ? 'disabled' : buttonType}
                   runOnButtonClick={runOnButtonClick}
