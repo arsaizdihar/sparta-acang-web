@@ -56,6 +56,7 @@ export const eventPublicRouter = createRouter()
                 }
               : undefined,
           },
+          orderBy: { votesCount: 'desc' },
         }),
         ctx.prisma.kesanPesan.count({ where: { eventSlug: event.slug } }),
       ]);

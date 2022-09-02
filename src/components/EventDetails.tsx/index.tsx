@@ -28,7 +28,7 @@ export default function EventDetails(props: EventDetailsProps) {
 
   return (
     <div className="w-11/12 max-w-5xl h-fit mx-auto md:flex md:flex-row-reverse md:justify-between md:items-top md:gap-3">
-      <div className="w-full md:w-7/12 h-fit mb-5">
+      <div className="w-full md:w-2/5 h-fit mb-5 flex-shrink-0">
         <Image
           src={data.thumbnail.data.attributes.url}
           alt="thumbnail"
@@ -87,6 +87,16 @@ export default function EventDetails(props: EventDetailsProps) {
             )
           ) : null}
         </div>
+        {registerQuery.data ? (
+          <p className="uppercase font-sudo-title text-2xl lg:text-4xl text-sudo-dark-brown">
+            Status:{' '}
+            {registerQuery.data.eventSlug === data.slug
+              ? registerQuery.data.isWaiting
+                ? 'Waiting list'
+                : 'Terdaftar'
+              : 'Belum Terdaftar'}
+          </p>
+        ) : null}
       </div>
     </div>
   );
