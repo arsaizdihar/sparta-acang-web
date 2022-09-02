@@ -11,6 +11,7 @@ export interface MilestoneData {
     appName: string;
     description: string;
     images: { data: StrapiImage[] };
+    webUrl?: string;
   };
 }
 

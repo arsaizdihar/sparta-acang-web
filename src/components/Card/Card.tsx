@@ -12,6 +12,7 @@ type CardProps = {
   runOnButtonClick?: () => void;
   buttonText?: string;
   buttonType?: ButtonType;
+  webUrl?: string;
 };
 
 const Card = ({
@@ -23,6 +24,7 @@ const Card = ({
   runOnButtonClick,
   showButton = false,
   buttonType = 'normal',
+  webUrl,
 }: CardProps) => {
   const renderNav = (onChange: any, disabled: any, isLeft: boolean) => {
     return (
@@ -67,6 +69,12 @@ const Card = ({
           Kelompok {nthGroup} - ({appName})
         </h2>
         <p className="font-sudo-body self-start flex-1">{description}</p>
+        {webUrl ? (
+          <Button
+            text="Visit website"
+            runOnClick={() => window.open(webUrl, '_blank')}
+          />
+        ) : null}
         {showButton ? (
           <Button
             buttonType={buttonType}

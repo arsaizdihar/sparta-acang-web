@@ -37,6 +37,7 @@ export const getStaticProps: GetStaticProps = async () => {
               }
             }
             group
+            webUrl
           }
         }
       }
@@ -185,7 +186,9 @@ const SudoEx = () => {
         ) : null}
         <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 auto-rows-min gap-4 justify-center">
           {shownMilestone.map(
-            ({ attributes: { description, appName, group, images } }) => {
+            ({
+              attributes: { description, appName, group, images, webUrl },
+            }) => {
               const { buttonText, buttonType, runOnButtonClick } =
                 buttonPropsDeterminer(group, session);
               return (
@@ -203,6 +206,7 @@ const SudoEx = () => {
                   buttonType={processingSomething ? 'disabled' : buttonType}
                   runOnButtonClick={runOnButtonClick}
                   buttonText={buttonText}
+                  webUrl={webUrl}
                 />
               );
             },
