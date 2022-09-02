@@ -32,6 +32,7 @@ export default function SearchBar({
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          runOnSearch(query);
         }}
         className="flex gap-3"
       >

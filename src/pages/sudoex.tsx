@@ -1,23 +1,62 @@
 import Fuse from 'fuse.js';
+import { gql } from 'graphql-request';
+import { GetStaticProps } from 'next';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useQueryClient } from 'react-query';
 import Card from '~/components/Card/Card';
+import CustomHead from '~/components/CustomHead';
 import Modal from '~/components/Modal';
+import { usePageData } from '~/components/PageDataProvider';
 import SearchBar from '~/components/SearchBar/SearchBar';
 import Title from '~/components/Title';
 import { MilestoneData } from '~/types/cms';
 import { ButtonType } from '~/types/frontEndTypes';
+import { getFeatureFlag } from '~/utils/server/getFeatureFlag';
 import { request } from '~/utils/server/requestCMS';
 import { trpc } from '~/utils/trpc';
 
-type Props = {
-  allMilestone: MilestoneData[];
+export const getStaticProps: GetStaticProps = async () => {
+  const showMilestone = await getFeatureFlag('MILESTONE_SHOW');
+
+  const query = gql`
+    query {
+      milestones(sort: "group", pagination: { limit: 23 }) {
+        data {
+          attributes {
+            appName
+            description
+            images {
+              data {
+                id
+                attributes {
+                  url
+                }
+              }
+            }
+            group
+          }
+        }
+      }
+    }
+  `;
+
+  const result = await request<{ milestones: { data: MilestoneData[] } }>({
+    query,
+  });
+
+  return {
+    props: {
+      data: { allMilestone: result.milestones.data, showMilestone },
+    },
+    revalidate: 60,
+  };
 };
 
-const SudoEx = ({ allMilestone }: Props) => {
+const SudoEx = () => {
+  const { allMilestone } = usePageData<{ allMilestone: MilestoneData[] }>();
   const [shownMilestone, setShownMilestone] = useState(allMilestone);
   const [processingSomething, setProcessingSomething] = useState(false);
   const searchOptions = {
@@ -40,13 +79,11 @@ const SudoEx = ({ allMilestone }: Props) => {
       queryClient.invalidateQueries(['milestone.getVote']);
     },
   });
-  const {
-    data: voteData,
-    isLoading: voteDataLoading,
-    isError: voteDataError,
-  } = trpc.useQuery(['milestone.getVote']);
-
   const { data: session, status: sessionStatus } = useSession();
+  const { data: voteData, isLoading: voteDataLoading } = trpc.useQuery(
+    ['milestone.getVote'],
+    { enabled: !!session?.user },
+  );
 
   async function handleVote(group: number) {
     const loadingToast = toast.loading(`Sedang vote untuk kelompok ${group}`);
@@ -81,14 +118,6 @@ const SudoEx = ({ allMilestone }: Props) => {
     toast.success('Successfully cancelled your vote');
   }
 
-  if (voteDataLoading || sessionStatus === 'loading') {
-    return (
-      <div className="flex flex-grow items-center justify-center">
-        <h3 className="font-sudo-title text-3xl">Loading milestone data</h3>
-      </div>
-    );
-  }
-
   function buttonPropsDeterminer(
     group: number,
     session: Session | null,
@@ -116,6 +145,10 @@ const SudoEx = ({ allMilestone }: Props) => {
 
   return (
     <>
+      <CustomHead
+        title="SudoEx"
+        description="Rangkaian acara berupa Exhibiton dari SUDOVerse. Acara ini bertujuan untuk memberikan wadah partisipasi dari setiap anggota SUDO dalam acara angkatan dan menjadi tempat untuk memberikan donasi bagi orang yang hadir di acara ini."
+      />
       <div
         className={`fixed z-10 top-0 bottom-0 left-0 right-0 ${
           modalOpen ? '' : 'invisible'
@@ -150,7 +183,7 @@ const SudoEx = ({ allMilestone }: Props) => {
             You cannot vote because you are not logged in
           </h3>
         ) : null}
-        <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 auto-rows-min gap-4 justify-center place-items-center items-center">
+        <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 auto-rows-min gap-4 justify-center">
           {shownMilestone.map(
             ({ attributes: { description, appName, group, images } }) => {
               const { buttonText, buttonType, runOnButtonClick } =
@@ -162,7 +195,11 @@ const SudoEx = ({ allMilestone }: Props) => {
                   imageURLs={images.data.map(({ attributes: { url } }) => url)}
                   nthGroup={group}
                   appName={appName}
-                  showButton={sessionStatus === 'authenticated' ? true : false}
+                  showButton={
+                    sessionStatus === 'authenticated' && !voteDataLoading
+                      ? true
+                      : false
+                  }
                   buttonType={processingSomething ? 'disabled' : buttonType}
                   runOnButtonClick={runOnButtonClick}
                   buttonText={buttonText}
@@ -174,16 +211,6 @@ const SudoEx = ({ allMilestone }: Props) => {
       </div>
     </>
   );
-};
-
-export const getStaticProps = async () => {
-  const showMilestone = await getFeatureFlag('MILESTONE_SHOW');
-
-  return {
-    props: {
-      data: { showMilestone },
-    },
-  };
 };
 
 export default SudoEx;
