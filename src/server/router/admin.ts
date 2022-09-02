@@ -61,6 +61,7 @@ export const adminRouter = createProtectedRouter()
           break;
         case 'EVENT_KESAN':
           listUnvalidate = ['/sudolympic/basket', '/sudolympic/futsal'];
+          break;
         case 'MILESTONE_VOTE':
           listUnvalidate = ['/sudoex'];
         default:
