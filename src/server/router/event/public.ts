@@ -41,12 +41,34 @@ export const eventPublicRouter = createRouter()
           select: {
             userId: true,
             text: true,
-            user: { select: { name: true } },
+            user: { select: { name: true, image: true } },
+            votesCount: true,
+            upvotes: ctx.session?.user
+              ? {
+                  where: { id: ctx.session.user.id },
+                  select: { id: true },
+                }
+              : undefined,
+            downvotes: ctx.session?.user
+              ? {
+                  where: { id: ctx.session.user.id },
+                  select: { id: true },
+                }
+              : undefined,
           },
         }),
         ctx.prisma.kesanPesan.count({ where: { eventSlug: event.slug } }),
       ]);
 
-      return { kesanPesan, totalPages: Math.ceil(count / 10) };
+      return {
+        kesanPesan: kesanPesan.map((k) => ({
+          ...k,
+          upvotes: undefined,
+          downvotes: undefined,
+          isUpvoted: !!k.upvotes?.[0],
+          isDownvoted: !!k.downvotes?.[0],
+        })),
+        totalPages: Math.ceil(count / 10),
+      };
     },
   });

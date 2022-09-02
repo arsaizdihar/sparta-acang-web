@@ -14,6 +14,6 @@ export default defineNextConfig({
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['sudo.is3.cloudhost.id'],
+    domains: ['sudo.is3.cloudhost.id', 'lh3.googleusercontent.com'],
   },
 });

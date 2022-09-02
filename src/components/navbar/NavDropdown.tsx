@@ -1,27 +1,22 @@
 import Link from 'next/link';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import { MdArrowDropDown } from 'react-icons/md';
+import { useOutsideClick } from '~/utils/useOutsideClick';
 
 type NavDropdownProps = {
   children: ReactNode;
+  closeMenu?: () => void;
 };
 
-const NavDropdown = ({ children }: NavDropdownProps) => {
+const NavDropdown = ({ children, closeMenu }: NavDropdownProps) => {
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const handleClickOutside = (e: any) => {
-      if (!e.target.classList.contains('sudo-dropdown')) {
-        setOpen(false);
-      }
-    };
+  const ref = useRef<HTMLDivElement>(null);
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  });
+  useOutsideClick(ref, () => setOpen(false));
 
   return (
-    <div className="relative font-sudo-title">
+    <div className="relative font-sudo-title" ref={ref}>
       <button
         onClick={() => {
           setOpen(!open);
@@ -31,16 +26,23 @@ const NavDropdown = ({ children }: NavDropdownProps) => {
         {children}
         <MdArrowDropDown className="sudo-dropdown" />
       </button>
-      <NavDropdownMenu open={open} />
+      <NavDropdownMenu
+        open={open}
+        close={() => {
+          setOpen(false);
+          closeMenu?.();
+        }}
+      />
     </div>
   );
 };
 
 type NavDropdownMenuProps = {
   open: boolean;
+  close: () => void;
 };
 
-const NavDropdownMenu = ({ open }: NavDropdownMenuProps) => {
+const NavDropdownMenu = ({ open, close }: NavDropdownMenuProps) => {
   return (
     <div
       style={{ display: open ? 'block' : 'none' }}
@@ -48,15 +50,21 @@ const NavDropdownMenu = ({ open }: NavDropdownMenuProps) => {
     >
       <ul className="text-sm" aria-labelledby="dropdownDefault">
         <li>
-          <Link href="/">
-            <a className="sudo-dropdown block py-2 text-xl px-3 hover:bg-sudo-dark-brown/25 ">
+          <Link href="/sudolympic/futsal">
+            <a
+              className="sudo-dropdown block py-2 text-xl px-3 hover:bg-sudo-dark-brown/25 "
+              onClick={close}
+            >
               Futsal
             </a>
           </Link>
         </li>
         <li>
-          <Link href="/">
-            <a className="sudo-dropdown block py-2 text-xl px-3 hover:bg-sudo-dark-brown/25 ">
+          <Link href="/sudolympic/basket">
+            <a
+              className="sudo-dropdown block py-2 text-xl px-3 hover:bg-sudo-dark-brown/25 "
+              onClick={close}
+            >
               Basket
             </a>
           </Link>
