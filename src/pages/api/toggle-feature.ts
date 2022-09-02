@@ -59,14 +59,13 @@ const handler: NextApiHandler = async (req, res) => {
       default:
         break;
     }
+    const result = await prisma.featureFlag.update({
+      where: { name },
+      data: { value },
+    });
     await Promise.all(listUnvalidate.map((path) => res.revalidate(path)));
 
-    return res.json(
-      await prisma.featureFlag.update({
-        where: { name },
-        data: { value },
-      }),
-    );
+    return res.json(result);
   } catch (err) {
     res.status(400).json(err);
     return;

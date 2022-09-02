@@ -66,11 +66,12 @@ export const adminRouter = createProtectedRouter()
         default:
           break;
       }
-      await Promise.all(listUnvalidate.map((path) => res?.revalidate(path)));
-
-      return await prisma.featureFlag.update({
+      const result = await prisma.featureFlag.update({
         where: { name: input.name },
         data: { value: !featureFlag.value },
       });
+      await Promise.all(listUnvalidate.map((path) => res?.revalidate(path)));
+
+      return result;
     },
   });
