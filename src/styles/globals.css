@@ -49,3 +49,8 @@
 .image-gallery-image {
   @apply object-cover aspect-video bg-white !important;
 }
+
+input:checked ~ .dot {
+  transform: translateX(100%);
+  @apply bg-sudo-orange;
+}

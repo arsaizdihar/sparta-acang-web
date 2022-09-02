@@ -69,6 +69,7 @@ const MobileMenu = ({ open, closeMenu, session }: MobileMenuProps) => {
               SudoEx
             </NavLink>
           )}
+          {session?.user?.isAdmin && <NavLink href="/admin">Admin</NavLink>}
           <NavDropdown closeMenu={closeMenu}>SudoLympic</NavDropdown>
         </div>
         {session && (

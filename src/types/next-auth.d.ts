@@ -9,6 +9,7 @@ declare module 'next-auth' {
       id: string;
       classYear: 18 | 19 | 20 | 21;
       milestoneGroup?: number;
+      isAdmin: boolean;
     } & DefaultSession['user'];
   }
 }

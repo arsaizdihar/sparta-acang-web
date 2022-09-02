@@ -14,6 +14,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = user.id;
         session.user.classYear = user.classYear as any;
         session.user.milestoneGroup = user.milestoneGroup as any;
+        session.user.isAdmin = user.isAdmin as any;
       }
       return session;
     },

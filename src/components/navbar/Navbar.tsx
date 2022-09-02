@@ -60,6 +60,7 @@ const Navbar = () => {
             <NavLink href="/">Home</NavLink>
             {showMilestone && <NavLink href="/sudoex">SudoEx</NavLink>}
             <NavDropdown>SudoLympic</NavDropdown>
+            {session?.user?.isAdmin && <NavLink href="/admin">Admin</NavLink>}
             {session ? (
               <ProfileDropdown session={session} signOut={signOut} />
             ) : (
