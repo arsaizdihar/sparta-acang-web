@@ -10,9 +10,9 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   return (
-    <>
+    <div className="flex flex-col items-center justify-start w-full min-h-screen">
       <Navbar />
-      <main className="relative">
+      <main className="relative flex flex-col flex-grow items-center justify-start w-full">
         <Image
           layout="fill"
           objectFit="cover"
@@ -27,7 +27,7 @@ const Layout = ({ children }: Props) => {
         </div>
       </main>
       <Footer />
-    </>
+    </div>
   );
 };
 

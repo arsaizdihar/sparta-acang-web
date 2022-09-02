@@ -10,7 +10,8 @@ export interface MilestoneData {
     group: number;
     appName: string;
     description: string;
-    images: StrapiImage[];
+    images: { data: StrapiImage[] };
+    webUrl?: string;
   };
 }
 

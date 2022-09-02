@@ -45,3 +45,7 @@
 .prasyarat ul {
   @apply list-disc pl-5;
 }
+
+.image-gallery-image {
+  @apply object-cover aspect-video bg-white !important;
+}

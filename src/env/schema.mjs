@@ -23,7 +23,7 @@ export const serverSchema = z.object({
 export const clientSchema = z.object({
   NEXT_PUBLIC_GOOGLE_CLIENT_ID: z.string(),
   NEXT_PUBLIC_URL: z.string().url().default('http://localhost:3000'),
-  NEXT_PUBLIC_GOOGLE_ANALYTICS: z.string()
+  NEXT_PUBLIC_GOOGLE_ANALYTICS: z.string(),
 });
 
 /**
@@ -35,5 +35,5 @@ export const clientSchema = z.object({
 export const clientEnv = {
   NEXT_PUBLIC_GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
   NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
-  NEXT_PUBLIC_GOOGLE_ANALYTICS: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS
+  NEXT_PUBLIC_GOOGLE_ANALYTICS: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS,
 };
