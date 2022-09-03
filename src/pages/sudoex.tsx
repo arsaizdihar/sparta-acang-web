@@ -220,7 +220,10 @@ const SudoEx = () => {
                   showButton={
                     enableVote &&
                     sessionStatus === 'authenticated' &&
-                    !voteDataLoading
+                    !voteDataLoading &&
+                    (voteData?.milestoneGroup
+                      ? voteData.milestoneGroup === group
+                      : true)
                   }
                   buttonType={processingSomething ? 'disabled' : buttonType}
                   runOnButtonClick={runOnButtonClick}
