@@ -129,7 +129,7 @@ function FullScreen({
   useOutsideClick(ref, onClose);
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-10 bg-rgba flex items-center justify-center bg-black/30">
-      <div className="w-full" ref={ref}>
+      <div className="w-[calc(75vh*16/9)]" ref={ref}>
         <Gallery imageURLs={imageURLs} additionalClass="w-full" />
       </div>
     </div>,
