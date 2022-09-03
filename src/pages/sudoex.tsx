@@ -203,7 +203,7 @@ const SudoEx = () => {
             You cannot vote because you are not logged in
           </h3>
         ) : null}
-        <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 auto-rows-min gap-4 justify-center">
+        <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 auto-rows-min gap-4 justify-items-center">
           {shownMilestone.map(
             ({
               attributes: { description, appName, group, images, webUrl },
