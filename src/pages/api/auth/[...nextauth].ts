@@ -19,8 +19,9 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     signIn({ user }) {
+      const nimAwal = ['132', '135', '180', '181', '182', '183'];
       if (
-        !(user.email?.startsWith('135') || user.email?.startsWith('182')) ||
+        !nimAwal.some((awal) => user.email?.startsWith(awal)) ||
         !user.email?.endsWith('@std.stei.itb.ac.id')
       ) {
         return false;
